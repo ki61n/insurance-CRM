@@ -1,0 +1,72 @@
+<h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
+
+<div class="">
+ image: {{data.image}}
+    name: {{data.name}}
+    date: {{data.date}}
+    time: {{data.time}}
+    place: {{data.place}}
+    agent: {{data.agent.user.username}}
+
+   
+    
+</div>
+<div class="">
+
+    <h2>View Clients</h2>
+    <div class="responsive-table">
+        <table class="table table-stripped">
+            <thead>
+                <tr>
+                    <th> Name</th>
+                    <th>Email</th>
+                    <th>phone</th>
+                    <th>address</th>
+                    <th>aadhar</th>
+                    <th>pan</th>
+                    <th>anualincome</th>
+                    <th>mariage</th>
+                    <th>children</th>
+                    <th>education</th>
+                    <th>occupation</th>
+                    <th>otherpolicy</th>
+                    <th>policyno</th>
+                    <th>changepolicy</th>
+                    <th>clientRating</th>
+                    <th>edit</th>
+                    <th>delete</th>
+                    <th>view details</th>
+                </tr>
+                    
+                    
+        
+        <tbody>
+            {% for i in cdata %}
+
+           <tr>
+             <td>{{i.user.user.first_name}} {{i.user.user.last_name}}</td>
+            <td>{{i.user.user.email}}</td>
+            <td>{{i.user.phone}}</td>
+            <td>{{i.user.address}}</td>
+            <td>{{i.user.aadhar}}</td>
+            <td>{{i.user.pan}}</td>
+            <td>{{i.anualIncome}}</td>
+            <td>{{i.marrage}}</td>
+            <td>{{i.children}}</td>
+            <td>{{i.education}}</td>
+            <td>{{i.occupation}}</td>
+            <td>{{i.otherpolicy}}</td>
+            <td>{{i.policynumber}}</td>
+            <td>{{i.changePolicy}}</td>
+            <td>{{i.clientRating}}</td>
+            <td><a href="{% url 'editClients' i.id %}" class="btn btn-primary">Edit</a></td>
+            <td><a href="{% url 'delete_Clients' i.id%}" class="btn btn-danger">Delete</a></td>
+
+
+           </tr>
+            {% endfor %}
+
+        </tbody>
+        </table>
+    </div>
+</div>

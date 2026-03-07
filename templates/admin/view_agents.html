@@ -1,0 +1,39 @@
+<div class="">
+    <div class="tableresponsive">
+        <table class="table table-stripped ">
+            <thead>
+                <tr class="bg-success">
+                    
+                    <th>Name</th>
+                    <th>username</th>
+                    <th>email</th>
+                    <th>phone</th>
+                    <th>address</th>
+                    <th>Profile</th>
+                    <th>edit</th>
+                    <th>delete</th>
+                    <th>view campains</th>
+                    </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{i.user.first_name}} {{i.user.last_name}}</td>
+                    <td>{{i.user.username}}</td>
+                    <td>{{i.user.email}}</td>
+                    <td>{{i.phone}}</td>
+                    <td>{{i.address}}</td>
+                    <td>{% if i.profile %}{{i.profile}} {% endif %}</td>
+                    <td><a href="{% url 'editAgents' i.id %}" class="btn btn-primary">Edit</a></td>
+                    <td><a href="{% url 'delete_agents' i.id%}" class="btn btn-danger">Delete</a></td>
+                    <td><a href="" class="btn btn-info">view Campain</a></td>
+
+
+                </tr>
+                {% endfor %}
+
+
+            </tbody>
+        </table>
+    </div>
+</div>

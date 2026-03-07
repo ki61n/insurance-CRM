@@ -1,0 +1,41 @@
+<h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
+
+<div class="">
+    <div class="tableresponsive">
+        <table class="table table-stripped ">
+            <thead>
+                <tr>
+                    
+                    <th>Name</th>
+                    <th>Place</th>
+                    <th>date</th>
+                    <th>time</th>
+                    <th>agent assigned</th>
+                    <th>Image</th>
+                    <th>edit</th>
+                    <th>delete</th>
+                    <th>view details</th>
+                    </tr>
+            </thead>
+            <tbody>
+                 {% for i in data %}
+                <tr>
+                    <td>{{i.name}} </td>
+                    <td>{{i.place}}</td>
+                    <td>{{i.date}}</td>
+                    <td>{{i.time}}</td>
+                    <td>{{i.agent.user.username}}</td>
+                    <td>{% if i.image %}{{i.image}} {% endif %}</td>
+                    <td><a href="{% url 'editCampain' i.id %}" class="btn btn-primary">Edit</a></td>
+                    <td><a href="{% url 'delete_campain' i.id%}" class="btn btn-danger">Delete</a></td>
+                    <td><a href="{% url 'viewCampaindetails' i.id%}" class="btn btn-info">view Campain</a></td>
+
+
+                </tr>
+                {% endfor %}
+
+
+            </tbody>
+        </table>
+    </div>
+</div>

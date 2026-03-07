@@ -1,0 +1,20 @@
+<div class="">
+
+    {% for i in data %}
+     <a href="{% url 'viewAgentCampainDetails' i.id%}">
+    <div class="">
+        <h3>{{i.name}}</h3>
+        <p>Start date : {{i.date}}</p>
+        <p>Start time : {{i.time}}</p>
+        <p>Place : {{i.place}}</p>
+        <p>Agent : {{i.agent.user.username}}</p>
+        <p>Image : {{i.image}}</p>
+      
+        <br>
+        <hr>
+
+    </div>
+     </a>
+    {% endfor %}
+
+</div>
