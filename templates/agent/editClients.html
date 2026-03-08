@@ -1,4 +1,7 @@
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+   {% extends 'agent/baseagent.html' %}
+
+{% block content %}
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 
 <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
@@ -193,13 +196,14 @@
 
 function checkemail(){
     email=$('#email').val()
+    id={{data.user.user.id}}
     if (email.length==0){
         $('#emailerror').text('')
         return
     }
     $.ajax({
         type:'GET',
-        url:"{% url 'echackmail' %}?email="+email,
+        url:"{% url 'echackmail' %}?email="+email+ '&id='+id,
         success:function(response){
             if(response.user){
                 $('#emailerror').text('email alredy exist')
@@ -215,13 +219,14 @@ function checkemail(){
 
 function checkphone(){
     phone=$('#phone').val()
+    id={{data.user.id}}
     if (phone.length==0){
         $('#phoneerror').text('')
         return
     }
     $.ajax({
         type:'GET',
-        url:"{% url 'echackphone' %}?phone="+phone,
+        url:"{% url 'echackphone' %}?phone="+phone+'&id='+id,
         success:function(response){
             if(response.user){
                 $('#phoneerror').text('phone number alredy exist')
@@ -235,13 +240,14 @@ function checkphone(){
 
 function checkaadhar(){
     aadhar=$('#aadhar').val()
+    id={{data.user.id}}
     if (aadhar.length==0){
         $('#aadharerror').text('')
         return
     }
     $.ajax({
         type:'GET',
-        url:"{% url 'echackaadhar' %}?aadhar="+aadhar,
+        url:"{% url 'echackaadhar' %}?aadhar="+aadhar+'&id='+id,
         success:function(response){
             if(response.user){
                 $('#aadharerror').text('aadhar number alredy exist')
@@ -254,20 +260,21 @@ function checkaadhar(){
 }
 
 function checkpan(){
-    pan=$('#phone').val()
+    pan=$('#pan').val()
+    id={{data.user.id}}
     if (pan.length==0){
         $('#panerror').text('')
         return
     }
     $.ajax({
         type:'GET',
-        url:"{% url 'echackpan' %}?pan="+pan,
+        url:"{% url 'echackpan' %}?pan="+pan+'&id='+id,
         success:function(response){
             if(response.user){
-                $('#phoneerror').text('pan number alredy exist')
+                $('#panerror').text('pan number alredy exist')
                 
             }else{
-                $('#phoneerror').text('')
+                $('#panerror').text('')
             }
         }
     })
@@ -275,3 +282,4 @@ function checkpan(){
 
 </script>
 
+{% endblock %}

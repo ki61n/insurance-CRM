@@ -1,20 +1,7 @@
-home
+{% extends 'base.html'%}
 
-<h1>login</h1>
-<a href="{% url 'signin' %}"> login</a>
-<br>
-<a href="{% url 'out' %}">logout</a>
+{% block content %}
 
-<h1>admin</h1>
-<a href="{% url 'registerAgents' %}">register Agents </a>
-<a href="{% url 'viewAgents' %}">View Agents</a>
+Home
 
-
-<a href="{% url 'registerCampain' %}">Register Campain </a>
-<a href="{% url 'viewCampain' %}">View Campains</a>
-
-
-<h1>agent</h1>
-
-<a href="{% url 'agentCampains' %}">Agent Campains</a>
-
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'agent/baseagent.html' %}
+
+{% block content %}
+
+<div class="">
+
+    {{data.user.user.first_name}}
+    {{data.user.user.last_name}}
+    {{data.user.user.email}}
+    {{data.user.phone}}
+    {{data.user.address}}
+    {{data.user.gender}}
+    {{data.user.dob}}
+    {{data.user.profile}}
+    {{data.user.aadhar}}
+    {{data.user.pan}}
+    {{data.user.anualIncome}}
+    {{data.user.marrage}}
+    {{data.user.children}}
+    {{data.user.education}}
+    {{data.user.occupation}}
+    {{data.user.otherpolicy}}
+    {{data.user.policynumber}}
+    {{data.user.changePolicy}}
+    {{data.user.clientRating}}
+</div>
+<a href="{% url 'editClients' data.id %}" class="btn btn-primary">Edit</a>
+<a href="{% url 'delete_Clients' data.id%}" class="btn btn-danger">Delete</a>
+
+</div>
+
+{% endblock %}

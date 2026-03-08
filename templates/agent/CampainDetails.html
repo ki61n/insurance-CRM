@@ -1,3 +1,6 @@
+{% extends 'agent/baseagent.html' %}
+
+{% block content %}
 <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
 
 <div class="">
@@ -15,8 +18,8 @@
 <div class="">
 
     <h2>View Clients</h2>
-    <div class="responsive-table">
-        <table class="table table-stripped">
+    <div class="table-responsive">
+        <table class="table table-striped  table-hover ">
             <thead>
                 <tr>
                     <th> Name</th>
@@ -56,11 +59,12 @@
             <td>{{i.education}}</td>
             <td>{{i.occupation}}</td>
             <td>{{i.otherpolicy}}</td>
-            <td>{{i.policyno}}</td>
-            <td>{{i.changepolicy}}</td>
+            <td>{{i.policynumber}}</td>
+            <td>{{i.changePolicy}}</td>
             <td>{{i.clientRating}}</td>
             <td><a href="{% url 'editClients' i.id %}" class="btn btn-primary">Edit</a></td>
             <td><a href="{% url 'delete_Clients' i.id%}" class="btn btn-danger">Delete</a></td>
+            <td><a href="{% url 'Viewe_Client' i.id%}" class="btn btn-warning">View</a></td>
 
 
            </tr>
@@ -70,3 +74,5 @@
         </table>
     </div>
 </div>
+
+{% endblock %}

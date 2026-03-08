@@ -1,44 +1,41 @@
-{% extends 'admin/baseadmin.html' %}
-
-{% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
-
 <div class="">
-    <form action="{% url 'reg_agents' %}" method="post" enctype="multipart/form-data" onsubmit="return val(event)">
+    <form action="{% url 'edit_agents' data.id %}" method="post" enctype="multipart/form-data" onsubmit="return val(event)">
         {% csrf_token %}
         <div class="form-group">
             <label for="fname">First Name</label>
-            <input type="text" class="form-control" id="fname" name="fname">
+            <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" value="{{data.user.first_name}}">
         </div>
         <div class="form-group">
             <label for="lname">Last Name</label>
-            <input type="text" class="form-control" id="lname" name="lname">
+            <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" value="{{data.user.last_name}}">
         </div>
         <div class="form-group">
             <label for="uname">Username</label>
-            <input type="text" class="form-control" id="uname" name="uname">
+            <input type="text" class="form-control" id="uname" name="uname" placeholder="Username" value="{{data.user.username}}">
             <small id="unameerror" class="form-text text-danger">{{unameerror}}</small>
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" class="form-control" id="email" name="email">
+            <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="{{data.user.email}}">
             <small id="emailerror" class="form-text text-danger">{{emailerror}}</small>
         </div>
         <div class="form-group">
             <label for="phone">Phone</label>
-            <input type="text" class="form-control" id="phone" name="phone">
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" value="{{data.phone}}">
             <small id="phoneerror" class="form-text text-danger">{{phoneerror}}</small>
         </div>
         <div class="form-group">
             <label for="address">Address </label>
-            <input type="text" class="form-control" id="address" name="address">
+            <input type="text" class="form-control" id="address" name="address" placeholder="Address" value="{{data.address}}">
         </div>
         <div class="form-group">
             <label for="profile">Profile </label>
-            <input type="file" class="form-control" accept="image/*" id="profile" name="profile">
+            <input type="file" class="form-control" accept="image/*" id="profile" name="profile" >
         </div>
+        {{data.profile}}
 
         <input type="submit" class="form-control btn btn-info">
 
@@ -48,16 +45,18 @@
 </div>
 
 <script>
-     function val(e){
+
+    function val(e){
             email=document.getElementById("email").value
+            
             contact=document.getElementById("phone").value
-            err=document.getElementById('err')
+            var err=document.getElementById('err')
             if (err) {
                 err.innerHTML="";
             }
-            emailpattern = /^[^\s@]+@gmail\.[^\s@]+$/;
 
-            // emailpattern=/^[^\s@]+@[^gmail\.com]+$/;
+            emailpattern = /^[^\s@]+@gmail\.[^\s@]+$/;
+            // emailpattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             phonepattern=/^[6-9][0-9]{9}$/;
 
             if (! emailpattern.test(email)){
@@ -65,7 +64,7 @@
                 return false;
 
             }
-            else if (contact && !phonepattern.test(contact)){
+            else if (! phonepattern.test(contact)){
                 err.innerHTML="Phone number must contan 10 digits and starts with 6-9"
                 return false;
             }
@@ -73,6 +72,8 @@
                 err.innerHTML="";
                 return true;
             }
+
+
 
         }
 
@@ -83,26 +84,31 @@
             checkuname()
         })
 
-    $("#email").keyup(function(){
+        $("#email").keyup(function(){
 
-            checkemail()
+                checkemail()
+        })
+
+        $("#phone").keyup(function(){
+
+            checkphone()
+        })
     })
 
-    $("#phone").keyup(function(){
 
-        checkphone()
-    })
-})
 
 function checkuname(){
     var uname = $("#uname").val()
+    id={{data.id}}
+    console.log(id);
+    
     if (uname.length ==0){
         $('#unameerror').text('')
         return
     }
     $.ajax({
         type:'GET',
-        url:"{% url 'checkuname' %}?username="+uname,
+        url:"{% url 'echeckuname' %}?username="+uname+"&id="+id,
         success:function(response){
             if (response.user ){
                 $('#unameerror').text('username alredy exist')
@@ -118,13 +124,16 @@ function checkuname(){
 
 function checkemail(){
     email=$('#email').val()
+    id={{data.id}}
+    console.log(id);
+    
     if (email.length==0){
         $('#emailerror').text('')
         return
     }
     $.ajax({
         type:'GET',
-        url:"{% url 'chackmail' %}?email="+email,
+        url:"{% url 'echackmail' %}?email="+email+"&id="+id,
         success:function(response){
             if(response.user){
                 $('#emailerror').text('email alredy exist')
@@ -139,14 +148,17 @@ function checkemail(){
 
 
 function checkphone(){
+    id={{data.id}}
+    console.log(id);
+    
     phone=$('#phone').val()
     if (phone.length==0){
-        $('#phoneerror').text('')
+        $('#ephoneerror').text('')
         return
     }
     $.ajax({
         type:'GET',
-        url:"{% url 'chackphone' %}?phone="+phone,
+        url:"{% url 'echackphone'%}?phone="+phone+"&id="+id,
         success:function(response){
             if(response.user){
                 $('#phoneerror').text('phone number alredy exist')
@@ -157,7 +169,5 @@ function checkphone(){
         }
     })
 }
-    
+   
 </script>
-
-{% endblock %}

@@ -74,7 +74,9 @@ def admin(request):
 
 
 def agent(request):
-    return render(request,'agent/agent.html')
+    pdata=users.objects.get(user=request.user.id)
+
+    return render(request,'agent/agent.html',{'pdata':pdata})
 
 
 
@@ -90,29 +92,39 @@ def reg_agents(request):
         phone=request.POST['phone']
         address=request.POST['address']
         profile=request.FILES.get('profile')
+        if User.objects.filter(username=uname).exists():
+            messages.info(request,'username already exists')
+            return redirect('registerAgents')
+        if User.objects.filter(email=email).exists():
+            messages.info(request,'email already exists')
+            return redirect('registerAgents')
+        if users.objects.filter(phone=phone).exists():
+            messages.info(request,'phone already exists')
+            return redirect('registerAgents')
+        else:
 
 
-        upper = random.choice(string.ascii_uppercase)
-        digit = random.choice(string.digits)
-        special=random.choice(string.punctuation)
-        others = "".join(random.choices(string.ascii_letters + string.digits, k=4))
-        pass1 = "".join(random.sample(upper + special + digit + others, 7))
+            upper = random.choice(string.ascii_uppercase)
+            digit = random.choice(string.digits)
+            special=random.choice(string.punctuation)
+            others = "".join(random.choices(string.ascii_letters + string.digits, k=4))
+            pass1 = "".join(random.sample(upper + special + digit + others, 7))
 
-        user=User.objects.create_user(first_name=fname,last_name=lname,username=uname,email=email,password=pass1,is_staff=True)
-        user.save()
+            user=User.objects.create_user(first_name=fname,last_name=lname,username=uname,email=email,password=pass1,is_staff=True)
+            user.save()
 
-        data=users.objects.create(user=user,phone=phone,address=address,profile=profile)
-        data.save()
+            data=users.objects.create(user=user,phone=phone,address=address,profile=profile)
+            data.save()
 
-        send_mail("confidential Email",
-                  f"""This email contains confidential information.please dont share it with anyone.
-                    Dear {uname} you are now an agent 
-                    use this password for login {pass1}""",
-                  settings.EMAIL_HOST_USER,
-                  [email]
-                     )
-        messages.info(request,'Agent added successfully')
-        return redirect('viewAgents')
+            send_mail("confidential Email",
+                    f"""This email contains confidential information.please dont share it with anyone.
+                        Dear {uname} you are now an agent 
+                        use this password for login {pass1}""",
+                    settings.EMAIL_HOST_USER,
+                    [email]
+                        )
+            messages.info(request,'Agent added successfully')
+            return redirect('viewAgents')
     else:
         return redirect('registerAgents')
 
@@ -124,12 +136,16 @@ def reg_campain(request):
         time=request.POST['time']
         image=request.FILES.get('image')
         agentid=request.POST['agent']
-        agent=get_object_or_404(users,id=agentid)
-        data=Campain.objects.create(name=name,place=place,date=date,time=time,image=image,agent=agent)
-        data.save()
-        messages.info(request,'Campain added successfully')
+        if Campain.objects.filter(name=name).exists():
+            messages.info(request,'Campain already exists')
+            return redirect('registerCampain')
+        else:
+            agent=get_object_or_404(users,id=agentid)
+            data=Campain.objects.create(name=name,place=place,date=date,time=time,image=image,agent=agent)
+            data.save()
+            messages.info(request,'Campain added successfully')
 
-        return redirect('viewCampain')
+            return redirect('viewCampain')
     else:
         return redirect('registerCampain')
         
@@ -151,23 +167,40 @@ def edit_agents(request,id):
         userdata.phone=request.POST['phone']
         userdata.address=request.POST['address']
         img=request.FILES.get('profile')
-        if os.path.exists(userdata.profile.path):
-            os.remove(userdata.profile.path)
-        if img: 
+        if img:
+            if userdata.profile:
+                try:
+                    if os.path.exists(userdata.profile.path):
+                        os.remove(userdata.profile.path)
+                except ValueError:
+                    pass
             userdata.profile=img
 
+        if User.objects.filter(username=request.POST['uname']).exclude(id=userdata.user.id).exists():
+            messages.info(request,'username already exists')
+            return redirect('editAgents',id=id)
+        if User.objects.filter(email=request.POST['email']).exclude(id=userdata.user.id).exists():
+            messages.info(request,'email already exists')
+            return redirect('editAgents',id)
+        if users.objects.filter(phone=request.POST['phone']).exclude(id=id).exists():
+            messages.info(request,'phone already exists')
+            return redirect('editAgents',id=id)
+        else:
 
-        user.save()
-        userdata.save()
-        messages.info(request,'Agent edited successfully')
 
-        return redirect('viewAgents')
+
+            user.save()
+            userdata.save()
+            messages.info(request,'Agent edited successfully')
+
+            return redirect('viewAgents')
     else:
         return redirect('editAgents')
     
 
 
 def edit_campain(request,id):
+    a=id
     if request.method=='POST':
         data=get_object_or_404(Campain,id=id)
         data.name=request.POST['name']
@@ -175,18 +208,27 @@ def edit_campain(request,id):
         data.date=request.POST['date']
         data.time=request.POST['time']  
         img=request.FILES.get('image')
-        if os.path.exists(data.image.path):
-            os.remove(data.image.path)
-        if img: 
+        if img:
+            if data.image:
+                try:
+                    if os.path.exists(data.image.path):
+                        os.remove(data.image.path)
+                except ValueError:
+                    pass
+                
             data.image=img
         agentid=request.POST['agent']
         agent=get_object_or_404(users,id=agentid)
         data.agent=agent
+        if Campain.objects.filter(name=request.POST['name']).exclude(id=data.id).exists():
+            messages.info(request,'Campain already exists')
+            return redirect('editCampain',id=a)
+        else:
         
-        data.save()
-        messages.info(request,'Campain edited successfully')
+            data.save()
+            messages.info(request,'Campain edited successfully')
 
-        return redirect('viewCampain')
+            return redirect('viewCampain')
     else:
         return redirect('editCampain')
 

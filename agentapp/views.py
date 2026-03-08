@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import client
 import os
+from django.contrib.auth.hashers import check_password
 from django.http import JsonResponse
 
 
@@ -13,21 +14,52 @@ from django.http import JsonResponse
 def agentCampains(request):
     user= request.user
     data=Campain.objects.filter(agent__user=user)
-    return render(request,'agent/agentCampains.html',{'data':data})
+    pdata=users.objects.get(user=request.user.id)
+    print(pdata.id)
+    return render(request,'agent/agentCampains.html',{'data':data,'pdata':pdata})
 
 def viewAgentCampainDetails(request,id):
     data=Campain.objects.get(id=id)
     cdata=client.objects.filter(campain=data)
-    return render(request,'agent/CampainDetails.html',{'data':data,'cdata':cdata})
+    pdata=users.objects.get(user=request.user.id)
 
+    return render(request,'agent/CampainDetails.html',{'data':data,'cdata':cdata,'pdata':pdata})
+
+def Viewe_Client(request,id):
+    data=client.objects.get(id=id)
+    pdata=users.objects.get(user=request.user.id)
+
+def Vieweprofile(request):
+    pdata=users.objects.get(user=request.user.id)
+    return render(request,'agent/viewprofile.html',{'data':pdata,'pdata':pdata})
+
+
+
+    return render(request,'agent/Viewe_Client.html',{'data':data,'pdata':pdata})
 #  Registeration page
 def addClients(request,id):
     data=Campain.objects.get(id=id)
-    return render(request,'agent/RegisterClients.html',{'data':data})
+    pdata=users.objects.get(user=request.user.id)
+
+    return render(request,'agent/RegisterClients.html',{'data':data,'pdata':pdata})
 
 def editClients(request,id):
     data=get_object_or_404(client,id=id)
-    return render(request,'agent/editClients.html',{'data':data})
+    pdata=users.objects.get(user=request.user.id)
+
+    return render(request,'agent/editClients.html',{'data':data,'pdata':pdata})
+
+def changepassword(request):
+    pdata=users.objects.get(user=request.user.id)
+
+    return render(request,'agent/changepassword.html',{'pdata':pdata})
+
+def edit_profile(request,id):
+    data=get_object_or_404(users,id=id)
+    pdata=users.objects.get(user=request.user.id)
+
+    return render(request,'agent/edit_profile.html',{'data':data,'pdata':pdata})
+
 
 
 # reg functions
@@ -57,15 +89,28 @@ def reg_Clients(request,id):
         policynumber=request.POST['policyno']
         changePolicy=request.POST['changepolicy']
         clientRating=request.POST['clientRating']
+        if User.objects.filter(email=email).exists():
+            messages.info(request,'email already exists')
+            return redirect('addClients',id=id)
+        if users.objects.filter(phone=phone).exists():
+            messages.info(request,'phone already exists')
+            return redirect('addClients',id=id)
+        if users.objects.filter(aadhar=aadhar).exists():
+            messages.info(request,'aadhar already exists')
+            return redirect('addClients',id=id)
+        if users.objects.filter(pan=pan).exists():
+            messages.info(request,'pan already exists')
+            return redirect('addClients',id=id)
+        else:
 
-        usermodel=User.objects.create_user(first_name=fname,last_name=lname,email=email,username=email)
-        usermodel.save()
-        user=users(phone=phone,address=address,profile=profile,gender=gender,dob=dob,aadhar=aadhar,pan=pan,user=usermodel)
-        user.save()
-        Client=client(campain=campain,user=user,agent=agent,anualIncome=anualIncome,marrage=marrage,children=children,education=education,occupation=occupation,otherpolicy=otherpolicy,policynumber=policynumber,changePolicy=changePolicy,clientRating=clientRating)
-        Client.save()
-        messages.info(request,'client added successfully')
-        return redirect('viewAgentCampainDetails',id=id)
+            usermodel=User.objects.create_user(first_name=fname,last_name=lname,email=email,username=email)
+            usermodel.save()
+            user=users(phone=phone,address=address,profile=profile,gender=gender,dob=dob,aadhar=aadhar,pan=pan,user=usermodel)
+            user.save()
+            Client=client(campain=campain,user=user,agent=agent,anualIncome=anualIncome,marrage=marrage,children=children,education=education,occupation=occupation,otherpolicy=otherpolicy,policynumber=policynumber,changePolicy=changePolicy,clientRating=clientRating)
+            Client.save()
+            messages.info(request,'client added successfully')
+            return redirect('viewAgentCampainDetails',id=id)
     else:
         return redirect('addClients')
 
@@ -107,14 +152,60 @@ def edit_Clients(request,id):
         data.otherpolicy=request.POST['otherpolicy']
         data.policynumber=request.POST['policyno']
         data.changePolicy=request.POST['changepolicy']
+        if User.objects.filter(email=request.POST['email']).exclude(id=userdata.user.id).exists():
+            messages.info(request,'email already exists')
+            return redirect('editClients',id=id)
+        if users.objects.filter(phone=request.POST['phone']).exclude(id=userdata.id).exists():
+            messages.info(request,'phone already exists')
+            return redirect('editClients',id=id)
+        if users.objects.filter(aadhar=request.POST['aadhar']).exclude(id=userdata.id).exists():
+            messages.info(request,'aadhar already exists')
+            return redirect('editClients',id=id)
+        if users.objects.filter(pan=request.POST['pan']).exclude(id=userdata.id).exists():
+            messages.info(request,'pan already exists')
+            return redirect('editClients',id=id)
+        else:
 
-        user.save()
-        userdata.save()
-        data.save()
-        messages.info(request,'client edited successfully')
-        return redirect('viewAgentCampainDetails',id=data.campain.id)
+            user.save()
+            userdata.save()
+            data.save()
+            messages.info(request,'client edited successfully')
+            return redirect('viewAgentCampainDetails',id=data.campain.id)
     else:
         return redirect('editClients')
+
+
+
+
+def chpassword(request):
+    if request.method=='POST':
+        old=request.POST['old']
+        new=request.POST['new']
+        con=request.POST['con']
+        user=request.user
+
+        if not check_password(old,user.password):
+            messages.info(request,'old password not matched')
+            return redirect('changepassword')
+        else:
+            if old==new:
+                    messages.info(request,'old and new password are same please enter different password')
+                    return redirect('changepassword')
+            if len(new) < 6 or not any(i.isupper() for i in new) or not any(i in '~`!@#$%^&*)(_+-=][{|}\;:<>/?,."' for i in new) or not any(i.isdigit() for i in new):
+                    messages.info(request, 'password must contain uppercase letters, numbers, special characters and minimum 6 characters')
+                    return redirect('changepassword')
+            else:
+                if new==con:
+                    user.set_password(new)
+                    user.save()
+                    messages.info(request,'password updated')
+                    return redirect('signin')
+                else:
+                    messages.info(request,'password not matched')
+                    return redirect('changepassword')
+            
+
+    return render(request,'changepassword.html')
 
 
 # delete
@@ -161,11 +252,6 @@ def chackpan(request):
     user=users.objects.filter(pan=pan).exists()
     return JsonResponse({'user':user})
 
-def chackpan(request):
-    phone=request.GET['phone']
-    user=users.objects.filter(phone=phone).exists()
-    return JsonResponse({'user':user})
-
 def echeckuname(request):
     id=request.GET.get('id')
     
@@ -176,7 +262,7 @@ def echeckuname(request):
 
 def echackmail(request):
     id=request.GET.get('id')    
-    email=request.GET['email']
+    email=request.GET['email'] 
     user=User.objects.filter(email=email).exclude(id=id).exists()
     return JsonResponse({'user':user})
 
@@ -200,7 +286,7 @@ def echackaadhar(request):
 def echackpan(request):
     id = request.GET.get('id')
    
-    pan = request.GET.get('phone')
+    pan = request.GET.get('pan')
     user = users.objects.filter(pan=pan).exclude(id=id).exists()
     return JsonResponse({'user':user})
 

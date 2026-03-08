@@ -1,4 +1,7 @@
 
+{% extends 'admin/baseadmin.html' %}
+
+{% block content %}
 <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
 
 <div class="">
@@ -42,3 +45,4 @@
         </div>
     </form>
 </div>
+{% endblock %}

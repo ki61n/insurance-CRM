@@ -1,4 +1,7 @@
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+   {% extends 'agent/baseagent.html' %}
+
+{% block content %}
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 
 <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
@@ -273,7 +276,7 @@ function checkaadhar(){
 }
 
 function checkpan(){
-    pan=$('#phone').val()
+    pan=$('#pan').val()
     if (pan.length==0){
         $('#panerror').text('')
         return
@@ -283,13 +286,14 @@ function checkpan(){
         url:"{% url 'chackpan' %}?pan="+pan,
         success:function(response){
             if(response.user){
-                $('#phoneerror').text('pan number alredy exist')
+                $('#panerror').text('pan number alredy exist')
                 
             }else{
-                $('#phoneerror').text('')
+                $('#panerror').text('')
             }
         }
     })
 }
     
 </script>
+{% endblock %}
