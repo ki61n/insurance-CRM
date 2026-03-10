@@ -1,37 +1,46 @@
 {% extends 'admin/baseadmin.html' %}
 
 {% block content %}
-<h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
 
-<div class="">
-    <div class="tableresponsive">
+<style>
+    img{
+        height: 100px;
+        width: 100px;
+        object-fit: cover
+    }
+</style>
+<div class="container-fluid  py-5 d-flex justify-content-center align-items-center h-100">
+    <div class="content-wrapper w-100 br-5 ">
+        <h1>Campains</h1>
+        <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
+        <div class="table-responsive mh-500 ">
         <table class="table table-stripped ">
             <thead>
-                <tr>
-                    
+                <tr class="bg-success">
+                       
                     <th>Name</th>
                     <th>Place</th>
-                    <th>date</th>
-                    <th>time</th>
-                    <th>agent assigned</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Agent Assigned</th>
                     <th>Image</th>
-                    <th>edit</th>
-                    <th>delete</th>
-                    <th>view details</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th>View Details</th>
                     </tr>
             </thead>
             <tbody>
-                 {% for i in data %}
+                 {% for i in data reversed %}
                 <tr>
                     <td>{{i.name}} </td>
                     <td>{{i.place}}</td>
                     <td>{{i.date}}</td>
                     <td>{{i.time}}</td>
                     <td>{{i.agent.user.username}}</td>
-                    <td>{% if i.image %}{{i.image}} {% endif %}</td>
+                    <td>{% if i.image %}<img src="{{i.image.url}}" alt="">{% endif %}</td>
                     <td><a href="{% url 'editCampain' i.id %}" class="btn btn-primary">Edit</a></td>
-                    <td><a href="{% url 'delete_campain' i.id%}" class="btn btn-danger">Delete</a></td>
-                    <td><a href="{% url 'viewCampaindetails' i.id%}" class="btn btn-info">view Campain</a></td>
+                    <td><a href=""  class="btn btn-danger " data-toggle="modal" data-target="#myModal{{i.id}}">Delete</a></td>
+                    <td><a href="{% url 'viewCampaindetails' i.id%}" class="btn btn-info">view </a></td>
 
 
                 </tr>
@@ -40,7 +49,44 @@
 
             </tbody>
         </table>
+         {% for i in data%}
+        {% empty %}
+            <h1 class="text-center">No Data Found</h1>
+            {% endfor %}
     </div>
+    </div>
+    
 </div>
+
+
+
+
+   {% for i in data %}
+   <div class="modal" id="myModal{{i.id}}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header btn-danger">
+          <h4 class="modal-title">Confirm</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+         Do you want to Delete the Campain   {{i.name}} ?
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+
+          <a href="{% url 'delete_campain' i.id%}" class="btn btn-danger">Delete</a>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 
 {% endblock %}

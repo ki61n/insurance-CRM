@@ -12,6 +12,8 @@ urlpatterns =[
     path('viewAgents',views.viewAgents,name='viewAgents'),
     path('viewCampain',views.viewCampain,name='viewCampain'),
     path('viewCampaindetails/<int:id>',views.viewCampaindetails,name='viewCampaindetails'),
+    path('viewagentCampain/<int:id>',views.viewagentCampain,name='viewagentCampain'),
+    path('viewClientDetails/<int:id>',views.viewClientDetails,name='viewClientDetails'),
 
 
     # edit pages

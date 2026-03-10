@@ -18,7 +18,8 @@ import os
 
 
 def home(request):
-    return render(request,'home.html')
+    data=Campain.objects.all()
+    return render(request,'home.html',{'data':data})
 
 
 
@@ -48,7 +49,13 @@ def viewCampaindetails(request,id):
     return render(request,'admin/viewCampaindetails.html',{'data':data,'cdata':cdata})
 
 
+def viewagentCampain(request,id):
+    data=Campain.objects.filter(agent=id)
+    return render(request,'admin/viewagentCampain.html',{'data':data})
 
+def viewClientDetails(request,id):
+    data=client.objects.get(id=id)
+    return render(request,'admin/viewClientDetails.html',{'data':data})
 # edit page
 
 
@@ -70,13 +77,17 @@ def signin(request):
 
 
 def admin(request):
-    return render(request,'admin/admin.html')
+    adata=users.objects.filter(user__is_staff=True).exclude(user__is_superuser=True)
+    cdata=Campain.objects.all()
+    return render(request,'admin/admin.html',{'adata':adata,'cdata':cdata})
 
 
 def agent(request):
     pdata=users.objects.get(user=request.user.id)
+    data=Campain.objects.filter(agent__user=request.user.id)
 
-    return render(request,'agent/agent.html',{'pdata':pdata})
+
+    return render(request,'agent/agent.html',{'pdata':pdata,'data':data})
 
 
 
@@ -136,6 +147,7 @@ def reg_campain(request):
         time=request.POST['time']
         image=request.FILES.get('image')
         agentid=request.POST['agent']
+        print('agent =',agentid)
         if Campain.objects.filter(name=name).exists():
             messages.info(request,'Campain already exists')
             return redirect('registerCampain')
@@ -157,6 +169,7 @@ def reg_campain(request):
 
 def edit_agents(request,id):
     if request.method=='POST':
+        cruser=request.user
         userdata=get_object_or_404(users,id=id)
         user=get_object_or_404(User,id=userdata.user.id)
         user.first_name=request.POST['fname']
@@ -178,22 +191,34 @@ def edit_agents(request,id):
 
         if User.objects.filter(username=request.POST['uname']).exclude(id=userdata.user.id).exists():
             messages.info(request,'username already exists')
-            return redirect('editAgents',id=id)
+            if cruser.is_superuser:
+                return redirect('editAgents',id=id)
+            else:
+                return redirect('edit_profile',id=id)
         if User.objects.filter(email=request.POST['email']).exclude(id=userdata.user.id).exists():
             messages.info(request,'email already exists')
-            return redirect('editAgents',id)
+            if cruser.is_superuser:
+                return redirect('editAgents',id=id)
+            else:
+                return redirect('edit_profile',id=id)
         if users.objects.filter(phone=request.POST['phone']).exclude(id=id).exists():
             messages.info(request,'phone already exists')
-            return redirect('editAgents',id=id)
+            if cruser.is_superuser:
+                return redirect('editAgents',id=id)
+            else:
+                return redirect('edit_profile',id=id)
         else:
 
 
 
             user.save()
             userdata.save()
-            messages.info(request,'Agent edited successfully')
-
-            return redirect('viewAgents')
+            if cruser.is_superuser:
+                messages.info(request,'Agent edited successfully')
+                return redirect('viewAgents')
+            else:
+                messages.info(request,'Profile edited successfully')
+                return redirect('Vieweprofile')
     else:
         return redirect('editAgents')
     

@@ -1,35 +1,47 @@
 {% extends 'admin/baseadmin.html' %}
 
 {% block content %}
-<div class="">
-    <div class="tableresponsive">
+
+<style>
+    img{
+        height: 100px;
+        width: 100px;
+        object-fit: cover
+    }
+
+</style>
+<div class="container-fluid  py-5 d-flex justify-content-center align-items-center h-100">
+    <div class="content-wrapper w-100 br-5 ">
+        <h1>Agents</h1>
+        <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
+        <div class="table-responsive mh-500 ">
         <table class="table table-stripped ">
             <thead>
                 <tr class="bg-success">
                     
                     <th>Name</th>
-                    <th>username</th>
-                    <th>email</th>
-                    <th>phone</th>
-                    <th>address</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
                     <th>Profile</th>
-                    <th>edit</th>
-                    <th>delete</th>
-                    <th>view campains</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th>View campains</th>
                     </tr>
             </thead>
             <tbody>
-                {% for i in data %}
+                {% for i in data  reversed %}
                 <tr>
                     <td>{{i.user.first_name}} {{i.user.last_name}}</td>
                     <td>{{i.user.username}}</td>
                     <td>{{i.user.email}}</td>
                     <td>{{i.phone}}</td>
                     <td>{{i.address}}</td>
-                    <td>{% if i.profile %}{{i.profile}} {% endif %}</td>
+                    <td>{% if i.profile %}<img src="{{i.profile.url}}" alt="">{% else %}No Profile{% endif %}</td>
                     <td><a href="{% url 'editAgents' i.id %}" class="btn btn-primary">Edit</a></td>
-                    <td><a href="{% url 'delete_agents' i.id%}" class="btn btn-danger">Delete</a></td>
-                    <td><a href="" class="btn btn-info">view Campain</a></td>
+                    <td><a href=""  class="btn btn-danger " data-toggle="modal" data-target="#myModal{{i.id}}">Delete</a></td>
+                    <td><a href="{% url 'viewagentCampain' i.id%}" class="btn btn-info">view Campain</a></td>
 
 
                 </tr>
@@ -38,7 +50,44 @@
 
             </tbody>
         </table>
+         {% for i in data%}
+        {% empty %}
+            <h1 class="text-center">No Data Found</h1>
+            {% endfor %}
     </div>
+    </div>
+    
 </div>
+
+
+
+
+   {% for i in data %}
+   <div class="modal" id="myModal{{i.id}}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header btn-danger">
+          <h4 class="modal-title">Confirm</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+         Do you want to Delete the user   {{i.user.username}} ?
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+
+          <a href="{% url 'delete_agents' i.id%}" class="btn btn-danger">Delete</a>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 
 {% endblock %}

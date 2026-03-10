@@ -11,7 +11,7 @@ class users(models.Model):
     gender=models.CharField(max_length=10,null=True,blank=True)
     dob=models.DateField(null=True,blank=True)
     profile=models.ImageField(upload_to='profile',null=True,blank=True)
-    aadhar=models.IntegerField(null=True,blank=True)
+    aadhar=models.CharField(max_length=12,null=True,blank=True)
     pan=models.CharField(max_length=10,null=True,blank=True)
 
 
@@ -23,7 +23,3 @@ class Campain(models.Model):
     date=models.DateField(null=True,blank=True)
     time=models.TimeField(null=True,blank=True)
     image=models.ImageField(upload_to='campain',null=True,blank=True)
-
-
-
-

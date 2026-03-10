@@ -28,6 +28,7 @@ def viewAgentCampainDetails(request,id):
 def Viewe_Client(request,id):
     data=client.objects.get(id=id)
     pdata=users.objects.get(user=request.user.id)
+    return render(request,'agent/Viewe_Client.html',{'data':data,'pdata':pdata})
 
 def Vieweprofile(request):
     pdata=users.objects.get(user=request.user.id)
@@ -35,7 +36,6 @@ def Vieweprofile(request):
 
 
 
-    return render(request,'agent/Viewe_Client.html',{'data':data,'pdata':pdata})
 #  Registeration page
 def addClients(request,id):
     data=Campain.objects.get(id=id)
@@ -81,14 +81,24 @@ def reg_Clients(request,id):
         pan=request.POST['pan']
 
         anualIncome=request.POST['anualIncome']
-        marrage=request.POST['mariage']
+        marrage=request.POST['marrage']
         children=request.POST['children']
         education=request.POST['education']
         occupation=request.POST['occupation']
         otherpolicy=request.POST['otherpolicy']
-        policynumber=request.POST['policyno']
-        changePolicy=request.POST['changepolicy']
+        policynumber = None
+        changePolicy = None
+        if otherpolicy == 'yes':
+            if 'policyno' in request.POST and 'changepolicy' in request.POST:
+                policynumber=request.POST['policyno']
+                changePolicy=request.POST['changepolicy']
         clientRating=request.POST['clientRating']
+        if len(str(aadhar))!=12 :
+            messages.info(request,'aadhar must be 12 digits')
+            return redirect('addClients',id=id)
+        if len(pan)!=10:
+            messages.info(request,'pan must be 10 digits')
+            return redirect('addClients',id=id)
         if User.objects.filter(email=email).exists():
             messages.info(request,'email already exists')
             return redirect('addClients',id=id)
@@ -131,8 +141,10 @@ def edit_Clients(request,id):
         userdata.address=request.POST['address']
         userdata.gender=request.POST['gender']
         userdata.dob=request.POST['dob']
-        userdata.aadhar=request.POST['aadhar']
-        userdata.pan=request.POST['pan']
+        aadhar=request.POST['aadhar']
+        userdata.aadhar=aadhar
+        pan=request.POST['pan']
+        userdata.pan=pan
         img=request.FILES.get('profile')
         if img:
             if userdata.profile:
@@ -149,9 +161,23 @@ def edit_Clients(request,id):
         data.children=request.POST['children']
         data.education=request.POST['education']
         data.occupation=request.POST['occupation']
-        data.otherpolicy=request.POST['otherpolicy']
-        data.policynumber=request.POST['policyno']
-        data.changePolicy=request.POST['changepolicy']
+        otherpolicy=request.POST['otherpolicy']
+        data.otherpolicy=otherpolicy
+        if otherpolicy == 'yes':
+            data.policynumber=request.POST['policyno']
+            data.changePolicy=request.POST['changepolicy']
+        else:
+            data.policynumber=None
+            data.changePolicy=None
+        data.clientRating=request.POST['clientRating']
+
+        if len(str(aadhar))!=12 :
+            messages.info(request,'aadhar must be 12 digits')
+            return redirect('editClients',id=id)
+        if len(pan)!=10:
+            messages.info(request,'pan must be 10 digits')
+            return redirect('editClients',id=id)
+
         if User.objects.filter(email=request.POST['email']).exclude(id=userdata.user.id).exists():
             messages.info(request,'email already exists')
             return redirect('editClients',id=id)
@@ -216,7 +242,10 @@ def delete_Clients(request,id):
     user.delete()
     data.delete()
     messages.info(request,'client deleted successfully')
-    return redirect('viewAgentCampainDetails',id=data.campain.id)   
+    if request.user.is_superuser:
+        return redirect('viewCampaindetails',id=data.campain.id)
+    else:
+        return redirect('viewAgentCampainDetails',id=data.campain.id)   
 
 
 

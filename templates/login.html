@@ -1,11 +1,11 @@
 {% extends 'base.html'%}
 
 {% block content %}
-<div class="">
-    {% for i in messages %}
-    {{i}}
-    {% endfor %}
-    <h1>login</h1>
+<div class="container d-flex justify-content-center align-items-center py-5 ">
+    <div class="content-wrapper  mw-500  ">
+    <h1>Login</h1>
+        <h6>{% for i in messages %}{{i}}{% endfor %}</h6>
+<hr>
 
     <form action="{% url 'log' %}" method="post">
         {% csrf_token %}
@@ -19,8 +19,8 @@
             <input type="password" class="form-control" id="password" name="password">
         </div>
         <input type="submit" class="form-control btn btn-info">
-
-        </div>
     </form>
+        </div>
+   
 </div>
 {% endblock %}

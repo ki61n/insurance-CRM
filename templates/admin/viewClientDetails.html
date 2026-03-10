@@ -1,0 +1,144 @@
+{% extends 'admin/baseadmin.html' %}
+
+{% block content %}
+
+<style>
+    .img{
+        height: 200px;
+        width: 200px;
+        object-fit: cover;
+        border-radius: 5px;
+        background-image: radial-gradient(in hsl longer hue,rgb(255, 255, 255),black );
+
+        img{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    }
+    .space-between{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid rgb(205, 204, 204);
+        padding: 5px 3px;
+       
+    }
+    .container{
+        background-color: white;
+    }
+    .o1{
+        order: 1;
+    }
+    .o2{
+        order: 2
+        
+    }
+    @media (width<500px) {
+        .o1{
+            order: 2;
+        }
+        .o2{
+            order: 1;
+        }
+        
+    }
+
+</style>
+<div class="container py-5 d-flex justify-content-center align-items-center">
+    <div class="content-wrapper ">
+        <div class="row">
+            <div class="col-sm-6 p-3 o1">
+                 <h3>Personal Details</h3>
+                <div class="space-between"> <span class="font-weight-bold">Username </span> {{data.user.user.username}}</div>
+                <div class="space-between"> <span class="font-weight-bold">Email </span> {{data.user.user.email}}</div>
+                <div class="space-between"> <span class="font-weight-bold">Phone </span> {{data.user.phone}}</div>
+                <div class="space-between"> <span class="font-weight-bold">Address </span> {{data.user.address}}</div>
+                <div class="space-between"> <span class="font-weight-bold">Gender </span> {{data.user.gender}}</div>
+                <div class="space-between"> <span class="font-weight-bold">Date Of Birth </span> {{data.user.dob|date:'d-M-y'}}</div>
+                <div class="space-between"> <span class="font-weight-bold">Occupation </span> {{data.occupation}}</div>
+
+
+            </div>
+            <div class="col-sm-6 p-3 o2">
+                <div class="d-flex justify-content-center align-items-center flex-column border-bottom">
+            <div class="img">
+                {% if data.user.profile %}
+                <img src="{{data.user.profile.url}}" alt="">
+                {% endif %}</div>
+                <h2>{{data.user.user.first_name}} {{data.user.user.last_name}}</h2>
+        </div>
+                
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-6 p-3">
+                <h3>Other Details</h3>
+                <div class="space-between"> <span class="font-weight-bold">Aadhar </span> {{data.user.aadhar}}</div>
+                <div class="space-between"> <span class="font-weight-bold">Pan </span> {{data.user.pan}}</div>
+                <div class="space-between"> <span class="font-weight-bold">Anual Income</span> {{data.anualIncome}}</div>
+                <div class="space-between"> <span class="font-weight-bold">Marrage Status </span> {{data.marrage}}</div>
+                <div class="space-between"> <span class="font-weight-bold">Number of Childrens </span> {{data.children}}</div>
+                <div class="space-between"> <span class="font-weight-bold">Education </span> {{data.education}}</div>
+
+
+               
+            </div>
+            <div class="col-sm-6 p-3">
+                 <div class="">
+                    <h3>Other Policy Details</h3>
+                    <div class="space-between"> <span class="font-weight-bold">Other Policy </span> {{data.otherpolicy}}</div>
+                    {% if data.policynumber %}
+                    <div class="space-between"> <span class="font-weight-bold">Policy Number </span> {{data.policynumber}}</div>
+                    <div class="space-between"> <span class="font-weight-bold">Change Policy </span> {{data.changePolicy}}</div>
+                    {% endif %}
+                    <div class="space-between font-weight-bold"> <span class="font-weight-bold">Client Rating </span>{% if data.clientRating <= 2  %} <span class="text-danger">Bad </span> {% elif data.clientRating <= 4  %} <span class="text-warning">Normal </span> {% elif data.clientRating <= 6  %} <span class="text-info">Good </span>  {% elif data.clientRating <= 8  %} <span class="text-primary">Very Good </span> {% else %} <span class="text-success">Excellent</span>  {% endif %}</div>
+
+
+
+            
+        </div>
+                
+            </div>
+            
+
+        </div>
+            <a href=""  class="btn btn-danger " data-toggle="modal" data-target="#myModal">Delete</a>
+       
+    </div>
+
+  
+</div>
+
+</div>
+  
+
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header btn-danger">
+          <h4 class="modal-title">Confirm</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+         Do you want to Delete the Client   {{data.user.user.username}} ?
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+
+          <a href="{% url 'delete_Clients' data.id%}" class="btn btn-danger">Delete</a>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

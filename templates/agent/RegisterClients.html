@@ -4,136 +4,336 @@
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 
-<h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
+<style>
+    .custom-range::-webkit-slider-thumb { background: #5fe44b; }
+    .custom-range::-moz-range-thumb { background: #00ff08; }
+    .custom-range::-ms-thumb { background: #00ff37; }
 
 
-<div class="">
-    <form action="{% url 'reg_Clients' data.id %}" method="post" enctype="multipart/form-data" onsubmit="return val(event)">
+    @media (width < 500px) {
+        .br-5{
+            padding: 20px 10px;
+        }
+
+        
+
+        
+
+        .hide{
+            display: none !important; 
+        }
+        
+    }
+        .hidden {
+        display: none;
+    }
+</style>
+
+
+<div class="container-fluid py-5">
+    <div class="content-wrapper br-5">
+
+        <h1 class="text-center">Register Client</h1>
+        <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
+        <form action="{% url 'reg_Clients' data.id %}" method="post" enctype="multipart/form-data" onsubmit="return val(event)">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="fname">First Name</label>
-            <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" required>
-        </div>
-        <div class="form-group">
-            <label for="lname">Last Name</label>
-            <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
-            <small id="emailerror" class="form-text text-danger">{{emailerror}}</small>
 
-        </div>
-        <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" required>
-            <small id="phoneerror" class="form-text text-danger">{{phoneerror}}</small>
+            <div class="row">
 
-        </div>
-        <div class="form-group">
-            <label for="address">Address </label>
-            <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
-        </div>
+                <div class="col-sm-8">
+                    <div class="content-wrapper br-5">
+                        <h2>Personal Details</h2>
 
-        <div class="form-check form-check-inline">
-            <label for="gender">Gender </label>
-            <input type="radio" class="form-check-input"  id="gender1" value="male"  name="gender" required> <label for="" class="form-check-label">Male</label>
-            <input type="radio" class="form-check-input"  id="gender2" value="female"  name="gender" required> <label for="" class="form-check-label">Female</label>
-            <input type="radio" class="form-check-input"  id="gender3" value="others"  name="gender" required> <label for="" class="form-check-label">Others</label>
-        </div>
+                    <div class="row">
 
-        <div class="form-group">
-            <label for="dob">Date Of Birth </label>
-            <input type="date" class="form-control" id="dob" name="dob" placeholder="Date Of Birth " required>
-        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="fname">First Name</label>
+                                <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" required value="{{data.user.user.first_name}}">
+                            </div>
 
-        
-        <div class="form-group">
-            <label for="profile">Profile </label>
-            <input type="file" class="form-control" accept="image/*" id="profile" name="profile" >
-        </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="lname">Last Name</label>
+                                <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" required value="{{data.user.user.last_name}}">
+                            </div>      
 
 
-        <div class="form-group">
-            <label for="aadhar">Aadhar </label>
-            <input type="number" class="form-control"  id="aadhar" name="aadhar" placeholder="Aadhar Number" required>
-            <small id="aadharerror" class="form-text text-danger">{{aadharerror}}</small>
-        </div>
-       
+                        </div>
+
+                        
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required value="{{data.user.user.email}}">
+                                <small id="emailerror" class="form-text text-danger">{{emailerror}}</small>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" required value="{{data.user.phone}}">
+                                <small id="phoneerror" class="form-text text-danger">{{phoneerror}}</small>
+                            </div>
 
 
-        <div class="form-group">
-            <label for="pan">Pan </label>
-            <input type="text" class="form-control"  id="pan" name="pan" placeholder="PAN Number" required>
-            <small id="panerror" class="form-text text-danger">{{panerror}}</small>
-
-        </div>
+                        </div>
 
 
-        <div class="form-group">
-            <label for="anualincome">Anual Income</label>
-            <input type="text" class="form-control"  id="anualincome" name="anualIncome" placeholder="Annual Income" required>
-        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                            <label for="address">Address </label>
+                            <input type="text" class="form-control" id="address" name="address" placeholder="Address" required value="{{data.user.address}}">
+                        </div>
+
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                            <label for="gender">Gender </label>
+                            <div class="">
+                            <div class="form-check form-check-inline">
+                                
+                                <input type="radio" class="form-check-input"  id="gender1" value="male"  name="gender" required {% if data.user.gender == 'male' %}checked{% endif %}> <label for="gender1" class="form-check-label" >Male</label>
+                                <input type="radio" class="form-check-input ml-3"  id="gender2" value="female"  name="gender" required {% if data.user.gender == 'female' %}checked{% endif %}> <label for="gender2" class="form-check-label">Female</label>
+                                <input type="radio" class="form-check-input ml-3"  id="gender3" value="others"  name="gender" required {% if data.user.gender == 'others' %}checked{% endif %}> <label for="gender3" class="form-check-label">Others</label>
+                            </div>
+                            </div>
+                            </div>
 
 
-        <div class="form-check form-check-inline">
-            <label for="mariage">Marriage Status </label>
-            <input type="radio" class="form-check-input"  id="mariage1" value="yes"  name="mariage" required> <label for="" class="form-check-label">Married</label>
-            <input type="radio" class="form-check-input"  id="mariage2" value="no"  name="mariage" required> <label for="" class="form-check-label">Single</label>
-        </div>
+                        </div>
 
 
-        <div class="form-group">
-            <label for="children">No of Childeren </label>
-            <input type="text" class="form-control"  id="children" name="children" placeholder="Number of Children" >
-        </div>
-
-
-        <div class="form-group">
-            <label for="education">Education </label>
-            <input type="text" class="form-control"  id="education" name="education" placeholder="Education" required>
-        </div>
-
-        <div class="form-group">
-            <label for="occupation">Occupation </label>
-            <input type="text" class="form-control"  id="occupation" name="occupation" placeholder="Occupation" required>
-        </div>
-
-         <div class="form-check form-check-inline">
-            <label for="otherpolicy">Other Policy </label>
-            <input type="radio" class="form-check-input"  id="otherpolicy1" value="yes"  name="otherpolicy" required> <label for="" class="form-check-label">yes</label>
-            <input type="radio" class="form-check-input"  id="otherpolicy2" value="no"  name="otherpolicy" required> <label for="" class="form-check-label">No</label>
-        </div>
-
-        <div class="form-group">
-            <label for="policyno">Policy Number </label>
-            <input type="text" class="form-control"  id="policyno" name="policyno" placeholder="Policy Number">
-        </div>
-
-        <div class="form-check form-check-inline">
-            <label for="changepolicy"> Do you want to Change the Policy ? </label>
-            <input type="radio" class="form-check-input"  id="changepolicy1" value="yes"  name="changepolicy" required> <label for="" class="form-check-label">yes</label>
-            <input type="radio" class="form-check-input"  id="changepolicy2" value="no"  name="changepolicy" required> <label for="" class="form-check-label">No</label>
-        </div>
-        <div class="form-group">
-            <label for="clientRating">client Rating  </label>
-            <input type="text" class="form-control"  id="clientRating" name="clientRating" placeholder="Policy Number">
-        </div>
+                    </div>
 
 
 
-        <input type="submit" class="form-control btn btn-info">
+                     <div class="form-group">
+                        <label for="education">Education </label>
+                        <input type="text" class="form-control"  id="education" name="education" placeholder="Education" required value="{{data.education}}">
+                    </div>
 
 
+
+
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                            <label for="dob">Date Of Birth </label>
+                            <input type="date" class="form-control" id="dob" name="dob" placeholder="Date Of Birth " required value="{{data.user.dob|date:'Y-m-d'}}">
+
+                             <div class="form-group">
+            
+                                <label for="profile">Change/Upload new Profile Image</label>
+                                <input type="file" class="form-control" accept="image/*" id="profile" name="profile">
+                            </div>
+
+                        </div>
+
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {% if data.user.profile %}
+                                <div class="d-flex justify-content-center">
+                                    <img src="{{ data.user.profile.url }}" alt="Current Profile" style="max-width: 120px; height: auto; margin-bottom: 10px; border-radius: 5px;">
+                                </div>
+                                {% endif %}
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    
+                   
+
+
+                </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="content-wrapper br-5 h-full">
+                        <h2>Other Details</h2>
+
+                        <div class="form-group">
+                            <label for="aadhar">Aadhar </label>
+                            <input type="number" class="form-control"  id="aadhar" name="aadhar" placeholder="Aadhar Number" required value="{{data.user.aadhar}}">
+                            <small id="aadharerror" class="form-text text-danger">{{aadharerror}}</small>
+                        </div>  
+                        
+                        
+                        <div class="form-group">
+                            <label for="pan">Pan </label>
+                            <input type="text" class="form-control"  id="pan" name="pan" placeholder="PAN Number" required value="{{data.user.pan}}">
+                            <small id="panerror" class="form-text text-danger">{{panerror}}</small>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="anualincome">Anual Income</label>
+                            <input type="text" class="form-control"  id="anualincome" name="anualIncome" placeholder="Annual Income" required value="{{data.anualIncome}}">
+                        </div>
+
+                        <div class="form-group">
+                                <label for="mariage">Marriage Status </label>        
+                            <div class="">
+                                <div class="form-check form-check-inline">
+                                
+                                    <input type="radio" class="form-check-input"  id="mariage1" value="yes"  name="marrage" required {% if data.marrage == 'yes' %}checked{% endif %}> <label for="mariage1" class="form-check-label">Married</label>
+                                    <input type="radio" class="form-check-input ml-5"  id="mariage2" value="no"  name="marrage" required {% if data.marrage == 'no' %}checked{% endif %}> <label for="mariage2" class="form-check-label">Single</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="children">No of Childeren </label>
+                            <input type="text" class="form-control"  id="children" name="children" placeholder="Number of Children"  value="{{data.children}}">
+                        </div>
+
+                         <div class="form-group">
+                            <label for="occupation">Occupation </label>
+                            <input type="text" class="form-control"  id="occupation" name="occupation" placeholder="Occupation" required value="{{data.occupation}}">
+                        </div>
+
+
+
+                        </div>
+
+
+
+                </div>
+            </div>
+
+            <div class="content-wrapper mt-3 br-5">
+                <div class="form-group">
+                    <label for="otherpolicy">Other Policy </label>
+                    <div class="">
+                        <div class="form-check form-check-inline">
+                            
+                            <input type="radio" class="form-check-input"  id="otherpolicy1" value="yes" onchange="changehidden()" name="otherpolicy" required {% if data.otherpolicy == 'yes' %}checked{% endif %}> <label for="otherpolicy1" class="form-check-label">yes</label>
+                            <input type="radio" class="form-check-input ml-5"  id="otherpolicy2" value="no" onchange="changehidden()"  name="otherpolicy" required {% if data.otherpolicy == 'no' %}checked{% endif %}> <label for="otherpolicy2" class="form-check-label">No</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="hidden" id="hidden">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <label for="policyno">Policy Number </label>
+                                <input type="text" class="form-control"  id="policyno" name="policyno" placeholder="Policy Number" value="{{data.policynumber}}">
+                            </div>
+                            
+                        </div>
+                        <div class="col-sm-6">
+
+
+                            <div class="form-group">
+
+                                    <label for="changepolicy"> Do you want to Change the Policy ? </label>
+
+                                    <div class="">
+                                        <div class="form-check form-check-inline">
+
+                                            <input type="radio" class="form-check-input"  id="changepolicy" value="yes"  name="changepolicy"  {% if data.changePolicy == 'yes' %}checked{% endif %}> <label for="changepolicy1" class="form-check-label">yes</label>
+                                            <input type="radio" class="form-check-input ml-5"  id="changepolicy" value="no"  name="changepolicy"  {% if data.changePolicy == 'no' %}checked{% endif %}> <label for="changepolicy2" class="form-check-label">No</label>
+                                        </div>
+                                    </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group bg-light p-3 rounded border">
+                    <label for="clientRating" class="h5">Client Rating:</label>
+                    <div class="px-2">
+                        <input type="range" class="custom-range w-100" id="clientRating" name="clientRating" min="0" max="10" step="1" value="{{data.clientRating}}" oninput="updateRatingLabel(this.value)">
+                        <div class="d-flex justify-content-between mt-1">
+                            <small class="text-muted">0</small>
+                            <small class="text-muted">5</small>
+                            <small class="text-muted">10</small>
+                        </div>
+                        <div class="d-flex justify-content-between px-0 mt-2 font-weight-bold text-uppercase hide" style="font-size: 0.7rem; letter-spacing: 1px;">
+                            <span class="text-danger">Bad</span>
+                            <span class="text-warning">Normal</span>
+                            <span class="text-info">Good</span>
+                            <span class="text-primary">V. Good</span>
+                            <span class="text-success">Excellent</span>
+                        </div>
+                         <span id="ratingLabel" class="badge badge-primary ml-2"></span>
+                    </div>
+                    
+                </div>
+
+                
+
+
+
+                <input type="submit" class="form-control btn btn-info" id="submit">
+
+
+
+
+            </div>
+            </form>
+    </div>
         </div>
     </form>
 </div>
 
+
+
 <script>
+
+
+    function changehidden(){
+    var policy = $("input[name='otherpolicy']:checked").val();
+    if (policy=='yes'){
+        $('#hidden').removeClass('hidden')
+    }else{
+        $('#hidden').addClass('hidden')
+    }
+}
+ function updateRatingLabel(val) {
+     let label = "";
+     if (val <= 2) label = "Bad";
+     else if (val <= 4) label = "Normal";
+     else if (val <= 6) label = "Good";
+     else if (val <= 8) label = "Very Good";
+     else label = "Excellent";
+     document.getElementById('ratingLabel').innerText = val + " (" + label + ")";
+     }
+     updateRatingLabel(document.getElementById('clientRating').value);
+
      function val(e){
             email=document.getElementById("email").value
             contact=document.getElementById("phone").value
+           
             err=document.getElementById('err')
             if (err) {
                 err.innerHTML="";
@@ -189,7 +389,8 @@
 
 })
 
-    
+
+
 
 function checkuname(){
     var uname = $("#uname").val()

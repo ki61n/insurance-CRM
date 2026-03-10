@@ -1,7 +1,199 @@
 {% extends 'base.html'%}
 
 {% block content %}
+{% load static %}
+<style>
+    .h-40svh{
+        height: 40svh;
+        img{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+    img{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 25px;
 
-Home
+        }
+        .img{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 25px;
+        }
+        .p{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid rgb(205, 204, 204);
+            padding: 5px 3px;
+
+        }
+
+         .image{
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    }
+    
+    a,a:hover{
+        text-decoration: none;
+        color: black;
+    }
+
+    .max-h-200{
+        max-height: 200svh;
+        overflow-y: scroll;
+        scrollbar-width: none;
+    }
+        @media (width < 500px) {
+
+            .px-5px{
+                padding: 20px 5px;
+            }
+            
+        }
+        
+</style>
+<div class="corosal-image w-100  h-40svh mb-5 mt-1 rounded" style="position: relative;">
+        <img src="{% static 'home1.png' %} " alt=""  class="rounded">
+        <!-- <h1 class="absolute text-center w-100">  Insurance CRM</h1> -->
+    </div>
+<div class="container-fluid br-5">
+    
+     
+    <div class="content-wrapper mt-3 mh-500 br-5  px-5px " id="crm" >
+        <div class="row">
+            <div class="col-sm-5 h-full ">
+                <div class="img h-full">
+                    <img src="{% static 'agent2.png' %}" class="br-5" alt="">
+
+                </div>
+            </div>
+            <div class="col-sm-7 px-4">
+                <div class="grid">
+                <div class="content-wrapper mt-3 br-5 bg-dark text-info px-5px">
+                    <h1>What is an insurance CRM?</h1>
+                    <p>An insurance CRM is a solution that addresses the specific needs of insurance brokers and insurance providers. Organize all your leads and claims, automate assignments to the right people, and manage multiple policies in a single system with an insurance CRM. 
+                        Let your agents close deals and build long-lasting relationships by taking advantage of powerful desktop and mobile functionality.</p>
+                </div>
+                <div class="content-wrapper mt-3 br-5 px-5px">
+                    <h1>How is CRM important for insurance agents and brokers?</h1>
+                    <p>Competition is fierce, and trust can be hard to come by in the insurance business. Insurance agents and brokers need to build trust with their prospects by providing great experience, contextual communication, and resolving claims quickly. A CRM helps insurance businesses organize prospects, track opportunities, and automate activities, allowing you to focus more on addressing your customers' needs.</p>
+                </div>
+
+                <div class="content-wrapper mt-3 br-5  bg-info px-5px">
+                    <h1>Why choose us ?</h1>
+
+                    <div class="">
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="content-wrapper bg-light">
+                                    <h3>User-friendly interface</h3>
+                                    <hr>
+                                    <p>allows for quick adoption across your organization</p>
+                                </div>
+                                
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="content-wrapper bg-light mt-2">
+                                    <h3>Customization</h3>
+                                    <hr>
+                                    <p>allows for quick Customization across your organization</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    </div>
+
+
+    <div class="content-wrapper w-100 mt-3 br-5 px-5px max-h-200 " id="campaigns">
+        <h1> Campaigns</h1>
+        <div class="row">
+        {% for i in data %}
+        <div class="col-sm-4 p-3">
+             <a href="{% url 'signin' %}">
+            <div class="content-wrapper br-5 ">
+                <div class="image">
+                    {% if i.image %}
+                    <img src="{{i.image.url}}" alt="{{i.name}}">
+                    {% endif %}
+                   
+
+                </div>
+                <hr>
+                 <div class="">
+                        <h5>Name : {{i.name}}</h5>
+                        <p class="d-flex ">Place : {{i.place}} <span class="ml-auto">Date : <i class="badge badge-primary">{{i.date}}</i></span></p>
+                        
+                    </div>
+
+            </div>
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+            </div>
+
+      
+    </div>
+
+    <div class="content-wrapper mt-3 br-5" id="contact">
+
+        <h1 class="text-center">Contact us</h1>
+        <hr>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <h1>Interested in As? </h1>
+                <h1>Talk to our sales team</h1>
+                <p>From questions about pricing to one-on-one personalized demos, we'd love to connect and help get you started.</p>
+            </div>
+
+            <div class="col-sm-8">
+                <hr>
+                <p class="p">
+                
+                    <span>Address</span> 123 Insurance St, City, State 123456
+
+                </p>
+                <p class="p"><span>Email</span> adminInsuarance@gmail.com</p>
+                <p class="p"><span>Phone</span> 8521479635</p>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
 
 {% endblock %}

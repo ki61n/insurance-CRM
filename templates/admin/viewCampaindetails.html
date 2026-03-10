@@ -1,44 +1,68 @@
 {% extends 'admin/baseadmin.html' %}
 
 {% block content %}
+<style>
+    .img{
+        height:250px ;
+        width: 100%;
+
+        img{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+
+    }
+    .bg{
+        background-image: linear-gradient(45deg,rgb(32, 8, 57),purple);
+    }
+</style>
 <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
 
-<div class="">
- image: {{data.image}}
-    name: {{data.name}}
-    date: {{data.date}}
-    time: {{data.time}}
-    place: {{data.place}}
-    agent: {{data.agent.user.username}}
+<div class=" ">
+<div class="container-fluid content-wrapper rounded bg">
+    <div class="row">
+        <div class="col-sm-4  ">
+            <div class="content-wrapper text-center d-flex flex-column align-items-center justify-content-center h-full text-white br-5">
+                <h4>Campain Name</h4>   
+                <h1>{{data.name}}</h1>
+             
+            </div>
 
-   
-    
+        </div>
+        <div class="col-sm-8">
+            <div class="img content-wrapper p-3 br-5">
+                {% if data.image %}
+                <img src="{{data.image.url}}" alt="">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex text-white justify-content-around pt-2 flex-wrap">
+        <span>Place : <i>{{data.place}}</i></span>
+        <span>Date : <i>{{data.date}}</i></span>
+        <span>Time : <i>{{data.time}}</i></span>
+        <span>Agent : <i>{{data.agent.user.username}}</i></span>
+    </div>
 </div>
-<div class="">
+</div>
 
+<div class="container-fluid py-4">
+<div class="content-wrapper">
+    
     <h2>View Clients</h2>
-    <div class="responsive-table">
-        <table class="table table-stripped">
+    <div class="table-responsive mh-500">
+        <table class="table table-striped table-hover">
             <thead>
                 <tr>
                     <th> Name</th>
                     <th>Email</th>
-                    <th>phone</th>
-                    <th>address</th>
-                    <th>aadhar</th>
-                    <th>pan</th>
-                    <th>anualincome</th>
-                    <th>mariage</th>
-                    <th>children</th>
-                    <th>education</th>
-                    <th>occupation</th>
-                    <th>otherpolicy</th>
-                    <th>policyno</th>
-                    <th>changepolicy</th>
-                    <th>clientRating</th>
-                    <th>edit</th>
-                    <th>delete</th>
-                    <th>view details</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>View Details</th>
+                    <th>Delete</th>
                 </tr>
                     
                     
@@ -51,27 +75,59 @@
             <td>{{i.user.user.email}}</td>
             <td>{{i.user.phone}}</td>
             <td>{{i.user.address}}</td>
-            <td>{{i.user.aadhar}}</td>
-            <td>{{i.user.pan}}</td>
-            <td>{{i.anualIncome}}</td>
-            <td>{{i.marrage}}</td>
-            <td>{{i.children}}</td>
-            <td>{{i.education}}</td>
-            <td>{{i.occupation}}</td>
-            <td>{{i.otherpolicy}}</td>
-            <td>{{i.policynumber}}</td>
-            <td>{{i.changePolicy}}</td>
-            <td>{{i.clientRating}}</td>
-            <td><a href="{% url 'editClients' i.id %}" class="btn btn-primary">Edit</a></td>
-            <td><a href="{% url 'delete_Clients' i.id%}" class="btn btn-danger">Delete</a></td>
+           
+            <td><a href="{% url 'viewClientDetails' i.id %}" class="btn btn-primary">View</a></td>
+            <td><a href=""  class="btn btn-danger " data-toggle="modal" data-target="#myModal{{i.id}}">Delete</a></td>
 
 
            </tr>
+           
+           
             {% endfor %}
+            
+            
+
 
         </tbody>
+        
+
+            
         </table>
+        {% for i in cdata%}
+        {% empty %}
+            <h1 class="text-center">No Clients Found</h1>
+            {% endfor %}
     </div>
 </div>
+</div>
 
+
+
+   {% for i in cdata %}
+   <div class="modal" id="myModal{{i.id}}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header btn-danger">
+          <h4 class="modal-title">Confirm</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+         Do you want to Delete the Client   {{i.user.user.username}} ?
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+
+          <a href="{% url 'delete_Clients' i.id%}" class="btn btn-danger">Delete</a>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 {% endblock %}

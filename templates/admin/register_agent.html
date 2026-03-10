@@ -3,49 +3,81 @@
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-<h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
 
-<div class="">
+<div class="container d-flex justify-content-center align-items-center py-5 ">
+    <div class="content-wrapper w-100 br-5">
+        
+    <h1>Register Agents</h1>
+    <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
     <form action="{% url 'reg_agents' %}" method="post" enctype="multipart/form-data" onsubmit="return val(event)">
+
         {% csrf_token %}
-        <div class="form-group">
-            <label for="fname">First Name</label>
-            <input type="text" class="form-control" id="fname" name="fname">
+
+        <div class="row">
+            <div class="col-sm-6">
+            <div class="form-group">
+                <label for="fname">First Name</label>
+                <input type="text" class="form-control" id="fname" name="fname" required>
         </div>
-        <div class="form-group">
-            <label for="lname">Last Name</label>
-            <input type="text" class="form-control" id="lname" name="lname">
+            </div>
+            <div class="col-sm-6">
+            <div class="form-group">
+                <label for="lname">Last Name</label>
+                <input type="text" class="form-control" id="lname" name="lname"  required>
         </div>
-        <div class="form-group">
-            <label for="uname">Username</label>
-            <input type="text" class="form-control" id="uname" name="uname">
-            <small id="unameerror" class="form-text text-danger">{{unameerror}}</small>
+            </div>
+
         </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" class="form-control" id="email" name="email">
-            <small id="emailerror" class="form-text text-danger">{{emailerror}}</small>
+
+
+        <div class="row">
+            <div class="col-sm-6">
+            <div class="form-group">
+                <label for="uname">Username</label>
+                <input type="text" class="form-control" id="uname" name="uname" required>
+                <small id="unameerror" class="form-text text-danger">{{unameerror}}</small>
         </div>
-        <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="text" class="form-control" id="phone" name="phone">
-            <small id="phoneerror" class="form-text text-danger">{{phoneerror}}</small>
+            </div>
+            <div class="col-sm-6">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" id="email" name="email"  required>
+                <small id="emailerror" class="form-text text-danger">{{emailerror}}</small>
         </div>
-        <div class="form-group">
-            <label for="address">Address </label>
-            <input type="text" class="form-control" id="address" name="address">
+            </div>
+
         </div>
+
+
+        <div class="row">
+            <div class="col-sm-6">
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" class="form-control" id="phone" name="phone" required>
+                <small id="phoneerror" class="form-text text-danger">{{phoneerror}}</small>
+        </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                <label for="address">Address </label>
+                <input type="text" class="form-control" id="address" name="address" required>
+        </div>
+
+            </div>
+
+        </div>
+        
         <div class="form-group">
             <label for="profile">Profile </label>
             <input type="file" class="form-control" accept="image/*" id="profile" name="profile">
         </div>
 
-        <input type="submit" class="form-control btn btn-info">
+        <input type="submit" class="form-control btn btn-info" id="submit">
 
-
+</form>
         </div>
-    </form>
-</div>
+    
+    </div>
 
 <script>
      function val(e){
@@ -106,8 +138,10 @@ function checkuname(){
         success:function(response){
             if (response.user ){
                 $('#unameerror').text('username alredy exist')
+                $('#submit').attr('disabled', true);
             }else{
                 $('#unameerror').text('')
+                $('#submit').removeAttr('disabled');
 
             }
 
@@ -128,9 +162,11 @@ function checkemail(){
         success:function(response){
             if(response.user){
                 $('#emailerror').text('email alredy exist')
+                $('#submit').attr('disabled', true);
                 
             }else{
                 $('#emailerror').text('')
+                $('#submit').removeAttr('disabled');
             }
         }
     })
@@ -150,9 +186,11 @@ function checkphone(){
         success:function(response){
             if(response.user){
                 $('#phoneerror').text('phone number alredy exist')
+                $('#submit').attr('disabled', true);
                 
             }else{
                 $('#phoneerror').text('')
+                $('#submit').removeAttr('disabled');
             }
         }
     })

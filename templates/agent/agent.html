@@ -1,6 +1,89 @@
 {% extends 'agent/baseagent.html' %}
 
 {% block content %}
-{% include '../base.html' %}
-agent
+{% load static %}
+<style>
+    .img{
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+    }
+    .h-40svh{
+        height: 40svh;
+    }
+    
+    img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+    a,a:hover{
+        text-decoration: none;
+        color: black;
+    }
+    .absolute{
+        position: absolute;
+        top:20%;
+        font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        color: rgb(49, 66, 98);
+    }
+
+    @media (width < 500px) {
+
+        .absolute{
+            top: 20%;
+            color: rgb(137, 137, 170);
+            backdrop-filter: blur(1.5px);
+        }
+        
+    }
+</style>
+
+<div class="container-fluid  pb-5 d-flex flex-column justify-content-center align-items-center ">
+    <div class="corosal-image w-100  h-40svh mb-5" style="position: relative;">
+        <img src="{% static 'home2.png' %}" alt="" >
+        <h1 class="absolute text-center w-100">  Insurance CRM</h1>
+    </div>
+    
+
+    <div class="content-wrapper w-100 br-5 ">
+        <h1> Campains</h1>
+        <div class="row">
+        {% for i in data %}
+        <div class="col-sm-4 p-3">
+             <a href="{% url 'viewAgentCampainDetails' i.id%}">
+            <div class="content-wrapper br-5">
+                <div class="img">
+                    {% if i.image %}
+                    <img src="{{i.image.url}}" alt="{{i.name}}">
+                    {% endif %}
+                   
+
+                </div>
+                <hr>
+                 <div class="">
+                        <h5>Name : {{i.name}}</h5>
+                        <p class="d-flex ">Place : {{i.place}} <span class="ml-auto">Date : <i class="badge badge-primary">{{i.date}}</i></span></p>
+                        
+                    </div>
+
+            </div>
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+            </div>
+
+      
+    </div>
+</div>
+
 {% endblock %}

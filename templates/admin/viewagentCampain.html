@@ -1,0 +1,66 @@
+{% extends 'admin/baseadmin.html'%}
+
+{% block content %}
+<style>
+    .img{
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+    }
+    img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+    a,a:hover{
+        text-decoration: none;
+        color: black;
+    }
+</style>
+
+<div class="container-fluid  py-5 d-flex justify-content-center align-items-center h-100 ">
+
+    <div class="content-wrapper w-100 br-5 mh-500 ">
+        <h1>Agent Campains</h1>
+        <div class="row">
+        {% for i in data reversed %}
+        <div class="col-sm-4 p-3">
+             <a href="{% url 'viewCampaindetails' i.id%}">
+            <div class="content-wrapper">
+                <div class="img">
+                    {% if i.image %}
+                    <img src="{{i.image.url}}" alt="{{i.name}}">
+                    {% endif %}
+                   
+
+                </div>
+                <hr>
+                 <div class="">
+                        <h5>Name : {{i.name}}</h5>
+                        <p class="d-flex ">Place : {{i.place}} <span class="ml-auto">Date : <i class="badge badge-primary">{{i.date}}</i></span></p>
+                        
+                    </div>
+
+            </div>
+            </a>
+
+        </div>
+        {% empty %}
+        <div class="d-flex mh-500 justify-content-center align-items-center flex-column w-100">
+            <h1 class="text-center ">No Campains Found</h1>
+
+        </div>
+        {% endfor %}
+
+            </div>
+
+      
+    </div>
+</div>
+{% endblock %}
