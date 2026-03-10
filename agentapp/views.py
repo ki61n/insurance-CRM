@@ -6,11 +6,13 @@ from .models import client
 import os
 from django.contrib.auth.hashers import check_password
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
 # pages 
 
+@login_required(login_url='signin')
 def agentCampains(request):
     user= request.user
     data=Campain.objects.filter(agent__user=user)
@@ -18,6 +20,7 @@ def agentCampains(request):
     print(pdata.id)
     return render(request,'agent/agentCampains.html',{'data':data,'pdata':pdata})
 
+@login_required(login_url='signin')
 def viewAgentCampainDetails(request,id):
     data=Campain.objects.get(id=id)
     cdata=client.objects.filter(campain=data)
@@ -25,11 +28,13 @@ def viewAgentCampainDetails(request,id):
 
     return render(request,'agent/CampainDetails.html',{'data':data,'cdata':cdata,'pdata':pdata})
 
+@login_required(login_url='signin')
 def Viewe_Client(request,id):
     data=client.objects.get(id=id)
     pdata=users.objects.get(user=request.user.id)
     return render(request,'agent/Viewe_Client.html',{'data':data,'pdata':pdata})
 
+@login_required(login_url='signin')
 def Vieweprofile(request):
     pdata=users.objects.get(user=request.user.id)
     return render(request,'agent/viewprofile.html',{'data':pdata,'pdata':pdata})
@@ -37,23 +42,28 @@ def Vieweprofile(request):
 
 
 #  Registeration page
+
+@login_required(login_url='signin')
 def addClients(request,id):
     data=Campain.objects.get(id=id)
     pdata=users.objects.get(user=request.user.id)
 
     return render(request,'agent/RegisterClients.html',{'data':data,'pdata':pdata})
 
+@login_required(login_url='signin')
 def editClients(request,id):
     data=get_object_or_404(client,id=id)
     pdata=users.objects.get(user=request.user.id)
 
     return render(request,'agent/editClients.html',{'data':data,'pdata':pdata})
 
+@login_required(login_url='signin')
 def changepassword(request):
     pdata=users.objects.get(user=request.user.id)
 
     return render(request,'agent/changepassword.html',{'pdata':pdata})
 
+@login_required(login_url='signin')
 def edit_profile(request,id):
     data=get_object_or_404(users,id=id)
     pdata=users.objects.get(user=request.user.id)

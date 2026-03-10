@@ -6,6 +6,9 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth.decorators import login_required
+
+
 from django.http import JsonResponse
 from django.db.models import Q
 import random
@@ -16,7 +19,6 @@ import os
 
 # path page
 
-
 def home(request):
     data=Campain.objects.all()
     return render(request,'home.html',{'data':data})
@@ -24,46 +26,52 @@ def home(request):
 
 
 # register page
-
+@login_required(login_url='signin')
 def registerAgents(request):
     return render(request,'admin/register_agent.html')
 
+@login_required(login_url='signin')
 def registerCampain(request):
     agent=users.objects.filter(user__is_staff = True).exclude(user__is_superuser = True)
     return render(request,'admin/reg_campain.html',{'agent':agent})
 
 
 # view page
+@login_required(login_url='signin')
 def viewAgents(request):
     data=users.objects.filter(user__is_staff = True).exclude(user__is_superuser = True)
     return render(request,'admin/view_agents.html',{'data':data})
 
+@login_required(login_url='signin')
 def viewCampain(request):
     data=Campain.objects.all()
     return render(request,'admin/view_campains.html',{'data':data})
 
 
+@login_required(login_url='signin')
 def viewCampaindetails(request,id):
     data=Campain.objects.get(id=id)
     cdata=client.objects.filter(campain=data)
     return render(request,'admin/viewCampaindetails.html',{'data':data,'cdata':cdata})
 
-
+@login_required(login_url='signin')
 def viewagentCampain(request,id):
     data=Campain.objects.filter(agent=id)
     return render(request,'admin/viewagentCampain.html',{'data':data})
 
+@login_required(login_url='signin')
 def viewClientDetails(request,id):
     data=client.objects.get(id=id)
     return render(request,'admin/viewClientDetails.html',{'data':data})
 # edit page
 
-
+@login_required(login_url='signin')
 def editAgents(request,id):
     data=get_object_or_404(users,id=id)
 
     return render(request,'admin/edit_agent.html',{'data':data})
 
+@login_required(login_url='signin')
 def editCampain(request,id):
     data=get_object_or_404(Campain,id=id)
     agent=users.objects.filter(user__is_staff = True).exclude(user__is_superuser = True)
@@ -75,13 +83,13 @@ def editCampain(request,id):
 def signin(request):
     return render(request,'login.html') 
 
-
+@login_required(login_url='signin')
 def admin(request):
     adata=users.objects.filter(user__is_staff=True).exclude(user__is_superuser=True)
     cdata=Campain.objects.all()
     return render(request,'admin/admin.html',{'adata':adata,'cdata':cdata})
 
-
+@login_required(login_url='signin')
 def agent(request):
     pdata=users.objects.get(user=request.user.id)
     data=Campain.objects.filter(agent__user=request.user.id)

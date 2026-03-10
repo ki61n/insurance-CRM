@@ -4,7 +4,7 @@
 <div class="container d-flex justify-content-center align-items-center py-5 ">
     <div class="content-wrapper  mw-500  ">
     <h1>Login</h1>
-        <h6>{% for i in messages %}{{i}}{% endfor %}</h6>
+        <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
 <hr>
 
     <form action="{% url 'log' %}" method="post">
