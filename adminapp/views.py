@@ -20,7 +20,7 @@ import os
 # path page
 
 def home(request):
-    data=Campain.objects.all()
+    data=Campain.objects.all()[:9]
     return render(request,'home.html',{'data':data})
 
 
@@ -315,4 +315,3 @@ def log(request):
     
     return redirect('signin')
     
-

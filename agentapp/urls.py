@@ -46,6 +46,10 @@ urlpatterns = [
     path('echackphone',views.echackphone,name='echackphone'), 
     path('echackaadhar',views.echackaadhar,name='echackaadhar'),
     path('echackpan',views.echackpan,name='echackpan'),
+
+
+    path('checkCampainName',views.checkCampainName,name='checkCampainName'),
+    path('echeckCampainName',views.echeckCampainName,name='echeckCampainName'),
  
 
 

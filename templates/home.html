@@ -55,11 +55,31 @@
         color: black;
     }
 
-    .max-h-200{
+     /* .max-h-200{
         max-height: 200svh;
-        overflow-y: scroll;
+        overflow-y: hidden;
         scrollbar-width: none;
+    }  */
+
+    #campaigns .content-wrapper{
+        opacity: 0; scale: .8;
+
+        animation: fade-in linear forwards;
+        animation-timeline: view();
+        animation-range: 150px 500px;
     }
+
+    @keyframes fade-in {
+    /* from {
+       
+    } */
+    to {
+        opacity: 1; scale: 1;
+    }
+
+    
+}
+
         @media (width < 500px) {
 
             .px-5px{
@@ -137,7 +157,7 @@
     <div class="content-wrapper w-100 mt-3 br-5 px-5px max-h-200 " id="campaigns">
         <h1> Campaigns</h1>
         <div class="row">
-        {% for i in data %}
+        {% for i in data reversed %}
         <div class="col-sm-4 p-3">
              <a href="{% url 'signin' %}">
             <div class="content-wrapper br-5 ">
@@ -174,8 +194,8 @@
 
         <div class="row">
             <div class="col-sm-4">
-                <h1>Interested in As? </h1>
-                <h1>Talk to our sales team</h1>
+                <h1>Interested in us? </h1>
+                <h1>Talk to us</h1>
                 <p>From questions about pricing to one-on-one personalized demos, we'd love to connect and help get you started.</p>
             </div>
 
@@ -196,4 +216,21 @@
 </div>
 
 
+<!-- <script>
+    $(document).ready(function() {
+        var scrollHandler = function() {
+            var scrollContainer = $('#campaigns');
+            if (scrollContainer.length) {
+                var rect = scrollContainer.get(0).getBoundingClientRect();
+                var viewportHeight = window.innerHeight;
+                if (rect.top <= 0 && rect.bottom >= viewportHeight) {
+                    scrollContainer.css('overflow-y', 'scroll');
+                } else {
+                    scrollContainer.css('overflow-y', 'hidden');
+                }
+            }
+        };
+        $(window).on('scroll', scrollHandler);
+    });
+</script> -->
 {% endblock %}

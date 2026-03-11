@@ -1,6 +1,7 @@
 {% extends 'admin/baseadmin.html' %}
 
 {% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <div class="container d-flex justify-content-center align-items-center py-5 ">
     <div class="content-wrapper  w-100 br-5">
@@ -15,6 +16,8 @@
                 <div class="form-group">
             <label for="name"> Name</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="Campain Name" value="{{data.name}}" required>
+                        <small id="nameerror" class="form-text text-danger">{{nameerror}}</small>
+
         </div>
             </div>
 
@@ -69,5 +72,38 @@
         </div>
     </form>
     </div>
+
+    <script>
+
+        $(document).ready(function(){
+            $("#name").on('keyup',function(){
+                checkname()
+            })
+        })
+
+
+        function checkname(){
+            var name = $("#name").val()
+            if (name.length ==0){
+                $('#nameerror').text('')
+                return
+            }
+            $.ajax({
+                type:'GET',
+                url:"{% url 'echeckCampainName' %}?name="+name +"&id="+{{data.id}},
+                success:function(response){
+                    if (response.user){
+                        $('#nameerror').text('name already exists')
+                        $('#submit').attr('disabled', true);
+                    }
+                    else{
+                        $('#nameerror').text('')
+                        $('#submit').removeAttr('disabled');
+                    }
+                }
+            })
+            }
+        
+    </script>
     
 {% endblock %}

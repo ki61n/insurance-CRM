@@ -80,6 +80,39 @@
     </div>
 
 <script>
+    // document.getElementById('email').addEventListener('keyup', function() {
+    //     var evalue = this.value;
+    //     var emailerror = document.getElementById("emailerror");
+    //     var emailpattern = /^[^\s@]+@gmail\.[^\s@]+$/;
+    //     if (evalue.length > 0) {
+    //         if (!emailpattern.test(evalue)) {
+    //             emailerror.innerHTML = "invalid email address";
+    //         } else {
+    //             emailerror.innerHTML = "";
+    //         }
+    //     } else {
+    //         emailerror.innerHTML = "";
+    //     }
+    // });
+
+    // document.getElementById('phone').addEventListener('keyup', function() {
+    //     var contact = this.value;
+    //     var phoneerror = document.getElementById("phoneerror");
+    //     var phonepattern = /^[6-9][0-9]{9}$/;
+      
+    //         if (!phonepattern.test(contact)) {
+    //             phoneerror.innerHTML = "Phone number must contain 10 digits and starts with 6-9";
+    //         } else {
+    //             phoneerror.innerHTML = "";
+    //         }
+    //     } else {
+    //         phoneerror.innerHTML = "";
+    //     }
+    // });
+
+
+
+
      function val(e){
             email=document.getElementById("email").value
             contact=document.getElementById("phone").value
@@ -132,6 +165,7 @@ function checkuname(){
         $('#unameerror').text('')
         return
     }
+   
     $.ajax({
         type:'GET',
         url:"{% url 'checkuname' %}?username="+uname,
@@ -154,6 +188,14 @@ function checkemail(){
     email=$('#email').val()
     if (email.length==0){
         $('#emailerror').text('')
+        return
+
+    }
+    var emailpattern = /^[^\s@]+@gmail\.[^\s@]+$/;
+    if (! emailpattern.test(email)){
+       
+        $('#emailerror').text('invalid email address pattern')
+        $('#submit').attr('disabled', true);
         return
     }
     $.ajax({
@@ -180,6 +222,12 @@ function checkphone(){
         $('#phoneerror').text('')
         return
     }
+     var phonepattern = /^[6-9][0-9]{9}$/;     
+            if (!phonepattern.test(phone)) {
+                $('#phoneerror').text("Phone number must contain 10 digits and starts with 6-9");
+                $('#submit').attr('disabled', true);
+                return
+            }
     $.ajax({
         type:'GET',
         url:"{% url 'chackphone' %}?phone="+phone,

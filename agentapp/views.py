@@ -329,4 +329,15 @@ def echackpan(request):
     user = users.objects.filter(pan=pan).exclude(id=id).exists()
     return JsonResponse({'user':user})
 
-   
+def checkCampainName(request): 
+    name = request.GET.get('name')
+    print(name)
+    user = Campain.objects.filter(name=name).exists()
+    return JsonResponse({'user':user})
+
+def echeckCampainName(request): 
+    name = request.GET.get('name')
+    id = request.GET.get('id')
+    print(name)
+    user = Campain.objects.filter(name=name).exclude(id=id).exists()
+    return JsonResponse({'user':user})

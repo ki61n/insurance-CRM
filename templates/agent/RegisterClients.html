@@ -31,9 +31,9 @@
 
 
 <div class="container-fluid py-5">
-    <div class="content-wrapper br-5">
+    <div class="content-wrapper br-5 ">
 
-        <h1 class="text-center">Register Client</h1>
+        <h1 class="text-center mb-3">Register Client</h1>
         <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
         <form action="{% url 'reg_Clients' data.id %}" method="post" enctype="multipart/form-data" onsubmit="return val(event)">
         {% csrf_token %}
@@ -41,7 +41,7 @@
             <div class="row">
 
                 <div class="col-sm-8">
-                    <div class="content-wrapper br-5">
+                    <div class="content-wrapper br-5 mb-3 mb-sm-0">
                         <h2>Personal Details</h2>
 
                     <div class="row">
@@ -224,7 +224,7 @@
                 </div>
             </div>
 
-            <div class="content-wrapper mt-3 br-5">
+            <div class="content-wrapper mt-3  br-5">
                 <div class="form-group">
                     <label for="otherpolicy">Other Policy </label>
                     <div class="">
@@ -420,6 +420,13 @@ function checkemail(){
         $('#emailerror').text('')
         return
     }
+    var emailpattern = /^[^\s@]+@gmail\.[^\s@]+$/;
+    if (! emailpattern.test(email)){
+       
+        $('#emailerror').text('invalid email address pattern')
+        $('#submit').attr('disabled', true);
+        return
+    }
     $.ajax({
         type:'GET',
         url:"{% url 'chackmail' %}?email="+email,
@@ -442,6 +449,12 @@ function checkphone(){
         $('#phoneerror').text('')
         return
     }
+    var phonepattern = /^[6-9][0-9]{9}$/;     
+            if (!phonepattern.test(phone)) {
+                $('#phoneerror').text("Phone number must contain 10 digits and starts with 6-9");
+                $('#submit').attr('disabled', true);
+                return
+            }
     $.ajax({
         type:'GET',
         url:"{% url 'chackphone' %}?phone="+phone,
@@ -460,6 +473,12 @@ function checkaadhar(){
     aadhar=$('#aadhar').val()
     if (aadhar.length==0){
         $('#aadharerror').text('')
+        return
+    }
+    var aadharpattern = /^[0-9]{12}$/;
+    if (!aadharpattern.test(aadhar)) {
+        $('#aadharerror').text("Aadhar number must contain 12 digits");
+        $('#submit').attr('disabled', true);
         return
     }
     $.ajax({
@@ -482,6 +501,12 @@ function checkpan(){
         $('#panerror').text('')
         return
     }
+    var panpattern = /^[^\s]{10}$/;
+     if(! panpattern.test(pan)){
+        $('#panerror').text('invalid pan number')
+        $('#submit').attr('disabled', true);
+        return
+     }
     $.ajax({
         type:'GET',
         url:"{% url 'chackpan' %}?pan="+pan,

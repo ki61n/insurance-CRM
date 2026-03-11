@@ -12,28 +12,38 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<style>
+    .bg{
+        background-image: linear-gradient(45deg,rgb(234, 221, 248),rgb(178, 237, 254));
+        color: rgb(0, 0, 0);
+    }
+    .content-wrapper{
+        background-image: linear-gradient(45deg,rgb(238, 233, 244),rgb(255, 255, 255));
+    }
+</style>
 </head>
-<body style="overflow-x: hidden;">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-1">
-        <div class="container-fluid">
-            <a class="navbar-brand font-weight-bold" href="{% url 'agent' %}">INSURANCE CRM - {{request.user.username}}</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#agentNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="agentNavbar">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'agentCampains' %}">View Campaigns</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'Vieweprofile' %}">View Profile</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'edit_profile' pdata.id %}">Edit Profile</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-outline-danger btn-sm ml-lg-3 px-3 mt-2 mt-lg-0" href="{% url 'out' %}">Logout</a></li>
-                </ul>
+<body>
+    <div style="overflow-x: clip; scrollbar-width: none;">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-1">
+            <div class="container-fluid">
+                <a class="navbar-brand font-weight-bold" href="{% url 'agent' %}">INSURANCE CRM - {{request.user.username}}</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#agentNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="agentNavbar">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'agentCampains' %}">View Campaigns</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'Vieweprofile' %}">View Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'edit_profile' pdata.id %}">Edit Profile</a></li>
+                        <li class="nav-item"><a class="nav-link btn btn-outline-danger btn-sm ml-lg-3 px-3 mt-2 mt-lg-0" href="{% url 'out' %}">Logout</a></li>
+                    </ul>
+                </div>
             </div>
+        </nav>
+        <div class="bg">
+            {% block content %}{% endblock %}
+             {% include 'agent/footeragent.html' %}
         </div>
-    </nav>
-    <div class="" style="overflow-x: hidden;">
-        {% block content %}{% endblock %}
-         {% include 'agent/footeragent.html' %}
     </div>
-   
 </body>
 </html>

@@ -139,7 +139,7 @@
 
 function checkuname(){
     var uname = $("#uname").val()
-    id={{data.id}}
+    id={{data.user.id}}
     console.log(id);
     
     if (uname.length ==0){
@@ -165,11 +165,18 @@ function checkuname(){
 
 function checkemail(){
     email=$('#email').val()
-    id={{data.id}}
+    id={{data.user.id}}
     console.log(id);
     
     if (email.length==0){
         $('#emailerror').text('')
+        return
+    }
+     var emailpattern = /^[^\s@]+@gmail\.[^\s@]+$/;
+    if (! emailpattern.test(email)){
+       
+        $('#emailerror').text('invalid email address pattern')
+        $('#submit').attr('disabled', true);
         return
     }
     $.ajax({
@@ -200,6 +207,12 @@ function checkphone(){
         $('#submit').removeAttr('disabled')
         return
     }
+    var phonepattern = /^[6-9][0-9]{9}$/;     
+            if (!phonepattern.test(phone)) {
+                $('#phoneerror').text("Phone number must contain 10 digits and starts with 6-9");
+                $('#submit').attr('disabled', true);
+                return
+            }
     $.ajax({
         type:'GET',
         url:"{% url 'echackphone'%}?phone="+phone+"&id="+id,

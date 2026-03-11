@@ -17,9 +17,13 @@
         
 
     }
+    .content-wrapper{
+        background-image: linear-gradient(45deg,rgb(203, 192, 215),rgb(255, 255, 255));
+    }
     .bg{
         background-image: linear-gradient(45deg,rgb(32, 8, 57),purple);
     }
+    
 </style>
 <h6 class="text-danger" id="err">{% for i in messages %}{{i}}{% endfor %}</h6>
 
@@ -27,7 +31,7 @@
 <div class="container-fluid content-wrapper rounded bg">
     <div class="row">
         <div class="col-sm-4  ">
-            <div class="content-wrapper text-center d-flex flex-column align-items-center justify-content-center h-full text-white br-5">
+            <div class="content-wrapper text-center d-flex flex-column align-items-center justify-content-center h-full text-dark    br-5 ">
                 <h4>Campain Name</h4>   
                 <h1>{{data.name}}</h1>
              
@@ -35,7 +39,7 @@
 
         </div>
         <div class="col-sm-8">
-            <div class="img content-wrapper p-3 br-5">
+            <div class="img content-wrapper p-3 br-5 mt-3 mt-sm-0">
                 {% if data.image %}
                 <img src="{{data.image.url}}" alt="">
                 {% endif %}

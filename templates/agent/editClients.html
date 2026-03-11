@@ -398,6 +398,13 @@ function checkemail(){
         $('#emailerror').text('')
         return
     }
+     var emailpattern = /^[^\s@]+@gmail\.[^\s@]+$/;
+    if (! emailpattern.test(email)){
+       
+        $('#emailerror').text('invalid email address pattern')
+        $('#submit').attr('disabled', true);
+        return
+    }
     $.ajax({
         type:'GET',
         url:"{% url 'echackmail' %}?email="+email+ '&id='+id,
@@ -423,6 +430,12 @@ function checkphone(){
         $('#phoneerror').text('')
         return
     }
+    var phonepattern = /^[6-9][0-9]{9}$/;     
+            if (!phonepattern.test(phone)) {
+                $('#phoneerror').text("Phone number must contain 10 digits and starts with 6-9");
+                $('#submit').attr('disabled', true);
+                return
+            }
     $.ajax({
         type:'GET',
         url:"{% url 'echackphone' %}?phone="+phone+'&id='+id,
@@ -444,6 +457,12 @@ function checkaadhar(){
     id={{data.user.id}}
     if (aadhar.length==0){
         $('#aadharerror').text('')
+        return
+    }
+    var aadharpattern = /^[0-9]{12}$/;
+    if (!aadharpattern.test(aadhar)) {
+        $('#aadharerror').text("Aadhar number must contain 12 digits");
+        $('#submit').attr('disabled', true);
         return
     }
     $.ajax({
@@ -469,6 +488,12 @@ function checkpan(){
         $('#panerror').text('')
         return
     }
+     var panpattern = /^[^\s]{10}$/;
+     if(! panpattern.test(pan)){
+        $('#panerror').text('invalid pan number')
+        $('#submit').attr('disabled', true);
+        return
+     }
     $.ajax({
         type:'GET',
         url:"{% url 'echackpan' %}?pan="+pan+'&id='+id,

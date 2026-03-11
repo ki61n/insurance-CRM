@@ -8,6 +8,7 @@
         height: 200px;
         width: 200px;
         object-fit: cover;
+        object-position: center;
         border-radius: 5px;
         background-image: radial-gradient(in hsl longer hue,rgb(255, 255, 255),black );
 
@@ -16,8 +17,14 @@
             width: 100%;
             object-fit: cover;
             border-radius: 5px;
+            object-position: center;
         }
     }
+    /* .img:hover{
+        border-radius: 100px;
+        overflow: clip;
+
+    } */
     .space-between{
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -35,6 +42,7 @@
         order: 2
         
     }
+    
     @media (width<500px) {
         .o1{
             order: 2;
@@ -46,12 +54,12 @@
     }
 
 </style>
-<div class="container py-5 d-flex justify-content-center align-items-center">
+<div class="container py-5 d-flex justify-content-center align-items-center bg">
 
-    <div class="content-wrapper w-100 ">
-        <h1 class="text-center">Client Details</h1>
+    <div class="content-wrapper w-100  ">
+        <h1 class="text-center border-bottom pb-2 border-info">Client Details</h1>
         <div class="row">
-            <div class="col-sm-6 p-3 o1">
+            <div class="col-sm-6 p-3 o1 ">
                  <h3>Personal Details</h3>
                 <div class="space-between"> <span class="font-weight-bold">Email </span> {{data.user.user.email}}</div>
                 <div class="space-between"> <span class="font-weight-bold">Phone </span> {{data.user.phone}}</div>
@@ -74,8 +82,8 @@
             </div>
         </div>
         
-        <div class="row">
-            <div class="col-sm-6 p-3">
+        <div class="row border-bottom mb-2 border-danger">
+            <div class="col-sm-6 p-3 ">
                 <h3>Other Details</h3>
                 <div class="space-between"> <span class="font-weight-bold">Aadhar </span> {{data.user.aadhar}}</div>
                 <div class="space-between"> <span class="font-weight-bold">Pan </span> {{data.user.pan}}</div>
@@ -87,7 +95,7 @@
 
                
             </div>
-            <div class="col-sm-6 p-3">
+            <div class="col-sm-6 p-3 ">
                  <div class="">
                     <h3>Other Policy Details</h3>
                     <div class="space-between"> <span class="font-weight-bold">Other Policy </span> {{data.otherpolicy}}</div>

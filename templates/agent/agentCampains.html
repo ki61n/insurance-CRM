@@ -25,15 +25,17 @@
         text-decoration: none;
         color: black;
     }
+
+   
 </style>
 
 <div class="container-fluid  py-5 d-flex justify-content-center align-items-center h-100">
     
 
-    <div class="content-wrapper w-100 br-5 ">
+    <div class="content-wrapper w-100 br-5 abc">
         <h1> Campains</h1>
         <div class="row">
-        {% for i in data %}
+        {% for i in data reversed %}
         <div class="col-sm-4 p-3">
              <a href="{% url 'viewAgentCampainDetails' i.id%}">
             <div class="content-wrapper">

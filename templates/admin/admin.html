@@ -124,7 +124,7 @@
 
             </tbody>
         </table>
-         {% for i in adata%}
+         {% for i in adata reversed  %}
         {% empty %}
             <h1 class="text-center">No Data Found</h1>
             {% endfor %}
@@ -156,7 +156,7 @@
                     </tr>
             </thead>
             <tbody>
-                 {% for i in cdata %}
+                 {% for i in cdata reversed %}
                 <tr>
                     <td>{{i.name}} </td>
                     <td>{{i.place}}</td>
