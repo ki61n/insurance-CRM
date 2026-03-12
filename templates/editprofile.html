@@ -155,6 +155,8 @@ function checkuname(){
                 $('#submit').attr('disabled', true)
             }else{
                 $('#unameerror').text('')
+                $('#submit').removeAttr('disabled')
+
 
             }
 
@@ -178,6 +180,10 @@ function checkemail(){
         $('#emailerror').text('invalid email address pattern')
         $('#submit').attr('disabled', true);
         return
+    }
+    else{
+        $('#emailerror').text('')
+        $('#submit').removeAttr('disabled');
     }
     $.ajax({
         type:'GET',
@@ -213,6 +219,10 @@ function checkphone(){
                 $('#submit').attr('disabled', true);
                 return
             }
+            else{
+        $('#phoneerror').text('')
+        $('#submit').removeAttr('disabled');
+    }
     $.ajax({
         type:'GET',
         url:"{% url 'echackphone'%}?phone="+phone+"&id="+id,

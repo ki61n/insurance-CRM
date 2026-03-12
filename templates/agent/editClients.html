@@ -405,6 +405,10 @@ function checkemail(){
         $('#submit').attr('disabled', true);
         return
     }
+    else{
+        $('#emailerror').text('')
+        $('#submit').removeAttr('disabled');
+    }
     $.ajax({
         type:'GET',
         url:"{% url 'echackmail' %}?email="+email+ '&id='+id,
@@ -436,6 +440,10 @@ function checkphone(){
                 $('#submit').attr('disabled', true);
                 return
             }
+            else{
+                $('#phoneerror').text('')
+                $('#submit').removeAttr('disabled')
+            }
     $.ajax({
         type:'GET',
         url:"{% url 'echackphone' %}?phone="+phone+'&id='+id,
@@ -465,6 +473,10 @@ function checkaadhar(){
         $('#submit').attr('disabled', true);
         return
     }
+    else{
+        $('#aadharerror').text('')
+        $('#submit').removeAttr('disabled')
+    }
     $.ajax({
         type:'GET',
         url:"{% url 'echackaadhar' %}?aadhar="+aadhar+'&id='+id,
@@ -493,6 +505,10 @@ function checkpan(){
         $('#panerror').text('invalid pan number')
         $('#submit').attr('disabled', true);
         return
+     }
+     else{
+        $('#panerror').text('')
+        $('#submit').removeAttr('disabled')
      }
     $.ajax({
         type:'GET',
